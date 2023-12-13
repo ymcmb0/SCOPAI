@@ -6,20 +6,20 @@ from rest_framework.decorators import api_view
 from .serializers import CustomUserSerializer
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from .views import register, user_login
+from .managers import CustomUserManager
 
 @api_view(['POST'])
 def api_register(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.data)
-        if form.is_valid():
-            user = form.save()
+        # Use the custom manager to create a user with the form data
+        manager = CustomUserManager()
+        user = manager.create_user_with_form(request.data)
+        if user:
             user_login(request, user)
             serializer = CustomUserSerializer(user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print(form.errors)  # Print form errors for debugging
-            return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response({'error': 'Invalid form data'}, status=status.HTTP_400_BAD_REQUEST)
 @api_view(['POST'])
 def api_login(request):
     if request.method == 'POST':

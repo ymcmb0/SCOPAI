@@ -1,129 +1,189 @@
-// Header.js
-import React,{ useState }  from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Inter } from "@fontsource/inter";
+import { NavLink } from 'react-router-dom';
 
-// Styled components
-const HeaderWrapper = styled.header`
-  font-family: 'Inter', sans-serif;
+const HeaderContainer = styled.header`
+  position: fixed;
+  max-width:1400px;
+  width: 100%;
+  background-color: ${({ scrolled }) => (scrolled ? 'black' : 'transparent')};
+  transition: background-color 0.3s;
+  z-index: 1000;
+  font-family: 'poppins', sans-serif;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const HeaderContent = styled.div`
+
   display: flex;
-  background: black;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
-  padding: 1rem;
-  background-color: black;
-  color: white;
-  width:100%;
-  height: 70px;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
-const LogoContainer = styled.div`
-
-  flex: 1;
+const Logo = styled.img`
+  max-width: 100px;
 `;
 
-const LogoLink = styled(Link)`
+const LogoText = styled.span`
+  color: ${({ textColor }) => textColor || '#fff'};
+  font-size: 1.6rem;
+  margin-left:-10px;
+  font-family: 'poppins', sans-serif;
+  font-weight: bold;
+`;
+
+const Navigation = styled.nav`
   display: flex;
+  justify-content: space-evenly;
   align-items: center;
+  flex-grow: 1;
+`;
+
+const NavigationLink = styled(NavLink)`
+  color: ${({ textColor }) => textColor || '#fff'};
   text-decoration: none;
-  color: white;
-  font-size: 18px; /* Adjusted font size */
-  margin-left: 10px; /* Adjusted margin */
-
-`;
-
-const LogoImg = styled.img`
-  margin-right: 0.5rem;
-  height: 30px;
-`;
-
-const Nav = styled.nav`
-  display: flex;
-  gap: 1rem;
-  flex: 2;
-  justify-content: center;
-`;
-
-const NavLink = styled(Link)`
-  text-decoration: none;
-  color: white;
+  margin: 0 -50px; /* Adjusted margin */
+  font-size: 1.1 rem;
   transition: color 0.3s;
-  margin-right: 50px;
+
   &:hover {
     color: #61dafb;
   }
 `;
 
-const AuthContainer = styled.div`
+const JoinButtonContainer = styled.div`
   position: relative;
+`;
+
+const JoinButton = styled.button`
+  background: none;
+  border: none;
+  color: ${({ textColor }) => textColor || '#fff'};
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
-  gap: 1rem;
-  font-style: italic;
-  margin-right: 50px; /* Adjusted margin */
+  align-items: center;
+  border-radius: 20px;
+
+  &:hover {
+    color: #61dafb;
+  }
+`;
+
+const DropdownArrow = styled.span`
+  margin-left: 5px;
 `;
 
 const Dropdown = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
-  width: 120px;
-  background: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  display: none;
-  overflow: hidden;
-  white-space: nowrap;
+  background-color: #242424;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  flex-direction: column;
+  padding: 10px;
+  z-index: 1;
+  text-align: center;
 `;
 
-const DropdownItem = styled(Link)`
-  padding: 8px;
+const DropdownItem = styled(NavLink)`
+  color: #fff;
   text-decoration: none;
-  color: black;
-  display: block;
-  transition: background 0.3s;
-
-  &:hover {
-    background: #f0f0f0;
-  }
+  font-size: 1rem;
+  margin: 5px 0;
 `;
 
-// Header component
 const Header = () => {
-const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [textColor, setTextColor] = useState('#fff');
+  const [showOptions, setShowOptions] = useState(false);
 
-  const handleMouseOver = () => {
-    setDropdownVisible(true);
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
 
-  const handleMouseLeave = () => {
-    setDropdownVisible(false);
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const updateTextColor = () => {
+      const bodyStyles = getComputedStyle(document.body);
+      const backgroundColor = bodyStyles.backgroundColor;
+
+      const rgbValues = backgroundColor.match(/\d+/g);
+      if (rgbValues) {
+        const [r, g, b] = rgbValues.map(Number);
+
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+        setTextColor(luminance > 0.5 ? '#000' : '#fff');
+      }
+    };
+
+    updateTextColor();
+    window.addEventListener('resize', updateTextColor);
+
+    return () => {
+      window.removeEventListener('resize', updateTextColor);
+    };
+  }, []);
+
+  const handleOptionsToggle = (status) => {
+    setShowOptions(status);
   };
 
   return (
-    <HeaderWrapper>
-      <LogoContainer>
-        <LogoLink to="/">
-          <LogoImg src="/Logoheader.png" alt="SCOPAI Logo" />
-          SCOPAI
-        </LogoLink>
-      </LogoContainer>
-      <Nav>
-        <NavLink to="/whyscopai">Why SCOPAI?</NavLink>
-        <NavLink to="/features">Features</NavLink>
-        <NavLink to="/pricing">Pricing</NavLink>
-        <NavLink to="/blog">Blog</NavLink>
-         <NavLink to="/placeadvertisement">Place Advertisement</NavLink>
-      </Nav>
-      <AuthContainer id="authContainer" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-        Join
-       <Dropdown id="dropdown" style={{ display: isDropdownVisible ? 'block' : 'none' }}>
-          <DropdownItem to="/login">Login</DropdownItem>
-          <DropdownItem to="/signup">Signup</DropdownItem>
-        </Dropdown>
-      </AuthContainer>
-    </HeaderWrapper>
+    <HeaderContainer scrolled={scrolled}>
+      <HeaderContent>
+        <Logo src="/Logo400x400.png" alt="SCOPAI" />
+        <LogoText textColor={textColor}>SCOPAI</LogoText>
+        <Navigation>
+          <NavigationLink to="/home" textColor={textColor}>
+            Home
+          </NavigationLink>
+          <NavigationLink to="/home#features" textColor={textColor}>
+            Features
+          </NavigationLink>
+          <NavigationLink to="/home#services" textColor={textColor}>
+            Services
+          </NavigationLink>
+          <NavigationLink to="/home#pricingpage" textColor={textColor}>
+            Pricing
+          </NavigationLink>
+          <NavigationLink to="/home#about" textColor={textColor}>
+            About
+          </NavigationLink>
+        </Navigation>
+        <JoinButtonContainer
+          onMouseEnter={() => handleOptionsToggle(true)}
+          onMouseLeave={() => handleOptionsToggle(false)}
+        >
+          <JoinButton textColor={textColor}>
+            Join <DropdownArrow>▼</DropdownArrow>
+             {showOptions && (
+            <Dropdown
+              isOpen={showOptions}
+              onMouseEnter={() => handleOptionsToggle(true)}
+              onMouseLeave={() => handleOptionsToggle(false)}
+            >
+              <DropdownItem to="/login">Login</DropdownItem>
+              <DropdownItem to="/register">Signup</DropdownItem>
+            </Dropdown>
+          )}
+          </JoinButton>
+
+        </JoinButtonContainer>
+      </HeaderContent>
+    </HeaderContainer>
   );
 };
 

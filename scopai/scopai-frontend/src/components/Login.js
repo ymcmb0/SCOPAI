@@ -7,30 +7,45 @@ const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
-  background-color: #000000;
 `;
 
-const LogoContainer = styled.div`
-  margin-bottom: 20px;
+const BorderedFormContainer = styled.div`
+  border: 2px solid #cccccc;
+  border-radius: 10px;
+  width:30%;
+  height:100vh;
+  overflow: hidden;
+`;
+
+const LogoAndTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 50px;
+  background-color: #f9f9f9;
 `;
 
 const LogoImage = styled.img`
-  width: 100px; /* Adjust the size as needed */
+  width: 80px; /* Adjust the size as needed */
+  margin-left: 50px;
 `;
+const TitleL = styled.h2`
+  color: #333333;
+  text-align:center;
+  margin: 10;
+
+`;
+const Title = styled.h2`
+  color: #333333;
+  text-align:center;
+  margin: 10;
+  margin-left: 120px;
+`;
+
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: #ffffff;
+  align-items: flex-start;
   padding: 40px; /* Increased padding for more space inside the form */
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 400px; /* Increased width */
-`;
-
-const Title = styled.h2`
-  color: #333333;
 `;
 
 const Label = styled.label`
@@ -53,43 +68,77 @@ const SubmitButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+margin-left:120px;
+  &:hover {
+    background-color: black;
+  }
+`;
+
+const ErrorMessage = styled.p`
+  color: #ff0000;
+  margin-top: 10px;
+`;
+
+const RegisterLink = styled.p`
+  margin-top: 20px;
+  font-size: 14px;
 `;
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = async () => {
-    try {
-      const response = await axios.post('http://localhost:8000/api/api/login/', {
-        username,
-        password,
-      });
+  try {
+    const response = await axios.post('http://localhost:8000/api/login/', {
+      email: email,
+      password: password,
+    });
 
-      console.log('Login successful:', response.data);
-      // Redirect or perform other actions on successful login
+    console.log('Login successful:', response.data);
+   setError('');
     } catch (error) {
       console.error('Login failed', error);
-      // Handle login failure
+      setError('Invalid email or password. Please try again.');
     }
+};const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    // Clear the error when the user starts typing again
+    setError('');
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    // Clear the error when the user starts typing again
+    setError('');
   };
 
   return (
     <LoginContainer>
-      <LogoContainer>
-        <LogoImage src="/Logo.png" alt="SCOPAI Logo" />
-        <Title>SCOPAI</Title>
-      </LogoContainer>
-      <FormContainer>
-        <Title>Login</Title>
-        <Label>Username:</Label>
-        <Input type="text" placeholder="Enter your username" onChange={(e) => setUsername(e.target.value)} />
+      <BorderedFormContainer>
+        <LogoAndTextContainer>
+          <LogoImage src="/Logologin.png" alt="SCOPAI Logo" />
+          <TitleL>SCOPAI</TitleL>
+        </LogoAndTextContainer>
+        <FormContainer onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+          <Title>Login</Title>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          <Label>Email:</Label>
+           <Input type="text" placeholder="Enter your email" onChange={handleEmailChange} />
+          <Label>Password:</Label>
+           <Input type="password" placeholder="Enter your password" onChange={handlePasswordChange} />
 
-        <Label>Password:</Label>
-        <Input type="password" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} />
+          <SubmitButton onClick={handleLogin}>Login</SubmitButton>
 
-        <SubmitButton onClick={handleLogin}>Login</SubmitButton>
-      </FormContainer>
+          <RegisterLink>
+            Not registered? <a href="/register">Register here</a>
+          </RegisterLink>
+           <RegisterLink>
+            Goto Homepage <a href="/home">Click here</a>
+          </RegisterLink>
+        </FormContainer>
+      </BorderedFormContainer>
     </LoginContainer>
   );
 };

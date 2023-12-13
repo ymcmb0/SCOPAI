@@ -1,9 +1,10 @@
 import './App.css';
 import LandingSection from './components/landingsection';
-import FeaturesSection from './components/featuressection';
+import FeaturePage from './components/featuressection';
 import AboutSection from './components/aboutsection';
+import ServicesSection from './components/servicessec';
 import GetStartedSection from './components/getstartedsection';
-
+import PricingPage from './components/pricingpage';
 import Register from './components/Register';
 import Login from './components/Login';
 
@@ -22,15 +23,19 @@ function App() {
   }, []);
 
   return (
-    <Router>
+<>
       <Routes>
         {/* Routes without Header and Footer */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/landingpage" element={<LandingSection />} />
-        <Route path="/features" element={<FeaturesSection />} />
-      </Routes >
-    </Router>
+        <Route path="/home" element={<LandingSection />} />
+//        <Route path="/features" element={<FeaturePage />} />
+//        <Route path="/services" element={<ServicesSection />} />
+//        <Route path="/pricingpage" element={<PricingPage />} />
+//        <Route path="/about" element={<AboutSection />} />
+
+        </Routes >
+    </>
   );
 }
 
