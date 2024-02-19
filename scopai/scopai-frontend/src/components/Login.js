@@ -1,60 +1,70 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+//import backgroundImage from './background.jpg';
 
-// Styled components
+
 const LoginContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  height: 100vh;
+  background-image: url(\Home.png);
+  background-size: cover;
+  background-position: center;
 `;
 
 const BorderedFormContainer = styled.div`
-  border: 2px solid #cccccc;
+  border: 2px solid #145DA0;
   border-radius: 10px;
-  width:30%;
-  height:100vh;
+  width: 28%;
+  height: auto;
+  background-color: #B1D4E0;
   overflow: hidden;
 `;
 
 const LogoAndTextContainer = styled.div`
   display: flex;
   align-items: center;
-  padding: 50px;
-  background-color: #f9f9f9;
+  padding: 20px;
+  background-color: #145DA0;
+  align-text: center;
 `;
 
 const LogoImage = styled.img`
-  width: 80px; /* Adjust the size as needed */
-  margin-left: 50px;
+  width: 80px;
+  margin-left: 65px;
+  
 `;
-const TitleL = styled.h2`
-  color: #333333;
-  text-align:center;
-  margin: 10;
 
+const TitleL = styled.h2`
+  color: #000000;
+  text-align: center;
+  margin: 10px;
 `;
+
 const Title = styled.h2`
   color: #333333;
-  text-align:center;
-  margin: 10;
-  margin-left: 120px;
+  text-align: center;
+  margin: 10px;
 `;
 
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 40px; /* Increased padding for more space inside the form */
+  align-items: center;
+  padding: 40px;
 `;
 
 const Label = styled.label`
-  display: block;
-  margin-bottom: 8px;
+display: block;
+margin-bottom: 7px;
+text-align: left; /* Align the label text to the left */
+width: 80%; /* Adjust the width if needed */
 `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 80%;
   padding: 8px;
   margin-bottom: 16px;
   border: 1px solid #cccccc;
@@ -62,15 +72,16 @@ const Input = styled.input`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #007bff;
+  background-color: #0C2D48;
   color: #ffffff;
   padding: 10px;
   border: none;
   border-radius: 4px;
+  margin-bottom: 10px;
   cursor: pointer;
-margin-left:120px;
+  width: 80%;
   &:hover {
-    background-color: black;
+    background-color: #2E8BC0;
   }
 `;
 
@@ -80,8 +91,9 @@ const ErrorMessage = styled.p`
 `;
 
 const RegisterLink = styled.p`
-  margin-top: 20px;
+  margin-top: 1px;
   font-size: 14px;
+  margin-bottom: 0px;
 `;
 
 const Login = () => {
@@ -90,19 +102,29 @@ const Login = () => {
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
-  try {
-    const response = await axios.post('http://localhost:8000/api/login/', {
-      email: email,
-      password: password,
-    });
+    if (!email || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
 
-    console.log('Login successful:', response.data);
-   setError('');
+    try {
+      const response = await axios.post('http://localhost:8000/api/login/', {
+        email: email,
+        password: password,
+      });
+
+      console.log('Login successful:', response.data);
+      // Clear form fields after successful login
+      setEmail('');
+      setPassword('');
+      setError('');
     } catch (error) {
       console.error('Login failed', error);
       setError('Invalid email or password. Please try again.');
     }
-};const handleEmailChange = (e) => {
+  };
+
+  const handleEmailChange = (e) => {
     setEmail(e.target.value);
     // Clear the error when the user starts typing again
     setError('');
@@ -121,26 +143,27 @@ const Login = () => {
           <LogoImage src="/Logologin.png" alt="SCOPAI Logo" />
           <TitleL>SCOPAI</TitleL>
         </LogoAndTextContainer>
-        <FormContainer onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+        <FormContainer>
           <Title>Login</Title>
           {error && <ErrorMessage>{error}</ErrorMessage>}
+          {/* Your form inputs */}
           <Label>Email:</Label>
-           <Input type="text" placeholder="Enter your email" onChange={handleEmailChange} />
+          <Input type='email' value={email} onChange={handleEmailChange} placeholder="Enter your email" />
           <Label>Password:</Label>
-           <Input type="password" placeholder="Enter your password" onChange={handlePasswordChange} />
+          <Input type='password' value={password} onChange={handlePasswordChange} placeholder="Enter your password" />
 
           <SubmitButton onClick={handleLogin}>Login</SubmitButton>
 
           <RegisterLink>
             Not registered? <a href="/register">Register here</a>
           </RegisterLink>
-           <RegisterLink>
+          <RegisterLink>
             Goto Homepage <a href="/home">Click here</a>
           </RegisterLink>
         </FormContainer>
       </BorderedFormContainer>
     </LoginContainer>
   );
-};
+}
 
 export default Login;
