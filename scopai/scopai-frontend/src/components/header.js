@@ -6,7 +6,7 @@ const HeaderContainer = styled.header`
   position: fixed;
   max-width:1400px;
   width: 100%;
-  background-color: ${({ scrolled }) => (scrolled ? 'black' : 'transparent')};
+  background-color: ${({ scrolled }) => (scrolled ? 'blue' : 'transparent')};
   transition: background-color 0.3s;
   z-index: 1000;
   font-family: 'poppins', sans-serif;

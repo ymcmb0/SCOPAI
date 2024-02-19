@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const AboutWrapper = styled.section`
   border: 1px solid #000;
   position:relative;
-  background-image: url('/smart-contract-featured-image.jpg');
+  background-image: url('/Home.png');
   background-repeat: no-repeat;
   background-size: cover;
  background-position: center;

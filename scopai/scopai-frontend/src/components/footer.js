@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { IoIosArrowUp } from "react-icons/io";
-import { Inter } from "@fontsource/inter";
+//import { Inter } from "@fontsource/inter";
 
 const FooterWrapper = styled.footer`
   background-color: #000; /* Black background */

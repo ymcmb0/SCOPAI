@@ -6,7 +6,7 @@ const Hero = styled.section`
   position: relative;
   max-width:1400px;
   width: 100%;
-  background-image: url(${'/home.jpeg'});
+  background-image: url(${'/Home.png'});
   background-repeat: no-repeat; /* Prevent background image from repeating */
   background-size: cover; /* Cover the entire container */
   background-position:center; /* Center the background image */

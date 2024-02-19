@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const ServicesSectionWrapper = styled.section`
   background-color: #f5f5f5;
-  background-image: url('/aboutsec.jpg');
+  background-image: url('/Home.png');
   background-repeat:no-repeat;
   background-size:cover;
   padding: 80px 20px;
