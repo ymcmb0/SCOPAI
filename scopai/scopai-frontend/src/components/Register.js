@@ -1,63 +1,66 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-//import axios from 'axios';
+import React, { useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 
-// Styled components
+
 const RegisterContainer = styled.div`
-//position:relative;
   display: flex;
-  flex-direction: column;
+  justify-content: right;
   align-items: center;
+  height: 100vh;
+  background-image: url('/Home.png');
+  background-size: cover;
+  background-position: center;
 `;
 
 const BorderedFormContainer = styled.div`
-  border: 2px solid #cccccc;
-  border-radius: 10px;
-  width: 30%;
-  //height: 100vh;
+  border: 2px solid #B1D4E0;
+  width: 38%;
+  height: 100vh;
+  background-color: #B1D4E0;
   overflow: hidden;
+  padding: 10px;
 `;
 
-const LogoAndTextContainer = styled.div`
+const TextContainer = styled.div`
+  color: #000000;
   display: flex;
-  align-items: center;
-  padding: 50px;
-  background-color: #f9f9f9;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 3px;
 `;
 
-const LogoImage = styled.img`
-  width: 80px; /* Adjust the size as needed */
-  margin-left: 50px;
-`;
-
-const TitleL = styled.h2`
-  color: #333333;
+const TitleL = styled.h1`
+  color: #000000;
+  font-size: 25px;
   text-align: center;
-  margin: 10;
+  margin-bottom: 0px;
 `;
 
 const Title = styled.h2`
-  color: #333333;
+  color: #000000;
   text-align: center;
-  margin: 10;
-  margin-left: 120px;
+  margin-top: 0px;
 `;
 
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 40px; /* Increased padding for more space inside the form */
+  align-items: left;
+  
 `;
 
 const Label = styled.label`
-  display: block;
-  margin-bottom: 8px;
+display: block;
+margin-left: 60px;
+margin-bottom: 7px;
+text-align: left; /* Align the label text to the left */
+width: 80%; /* Adjust the width if needed */
 `;
 
 const Input = styled.input`
-  width: 100%;
+  margin-left: 60px;
+  width: 80%;
   padding: 8px;
   margin-bottom: 16px;
   border: 1px solid #cccccc;
@@ -67,102 +70,96 @@ const Input = styled.input`
 const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
+  width: 80%;
+  margin-left: 60px;
+`;
 
-  input {
-    margin-right: 8px;
-  }
+const CheckboxInput = styled.input`
+  margin-right: 8px;
+  margin-left: px;
+`;
+
+const CheckboxLabel = styled.label`
+  color: #000000;
+  
 `;
 
 const SubmitButton = styled.button`
-  background-color: #28a745; /* Green color */
+  background-color: #0C2D48;
+  margin-left: 60px;
   color: #ffffff;
   padding: 10px;
   border: none;
   border-radius: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   cursor: pointer;
-  margin-left: 120px;
+  width: 80%;
 
   &:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #2E8BC0;
   }
 `;
 
 const ErrorMessage = styled.p`
   color: #ff0000;
-  margin-top: 5px; /* Increase or decrease as needed */
-  font-size: 14px; /* Adjust the font size */
+  margin-top: 5px;
 `;
 
 const RegisterLink = styled.p`
-  margin-top: 20px;
+  margin-top: 1px;
   font-size: 14px;
+  margin-left: 160px;
+  margin-bottom: 0px;
 `;
 
 const Register = () => {
- const { register, handleSubmit, formState: { errors } } = useForm();
+  const [error, setError] = useState('');
 
   const handleRegister = async (data) => {
     console.log('Registration payload:', data);
     try {
-      if (!data.isDeveloper && !data.isAdvertiser) {
+      if (!data.role) {
         throw new Error('Please select either Developer or Advertiser.');
       }
 
-      const response = await fetch('http://localhost:8000/api/register/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      }
-    catch (error) {
+      const response = await axios.post('http://localhost:8000/api/register/', data);
+      console.log('Registration successful:', response.data);
+    } catch (error) {
       console.error('Registration failed', error);
-      // Handle registration failure, display error message to the user
-      if (error.response) {
-        // Handle HTTP errors (non-2xx responses)
-        console.error('HTTP error:', error.response.data);
-      } else if (error.message) {
-        // Handle other errors
-        console.error('Error:', error.message);
-      }
+      setError('Registration failed. Please try again.');
     }
   };
 
   return (
     <RegisterContainer>
       <BorderedFormContainer>
-        <LogoAndTextContainer>
-          <LogoImage src="/Logologin.png" alt="SCOPAI Logo" />
-          <TitleL>SCOPAI</TitleL>
-        </LogoAndTextContainer>
+        <TextContainer>
+          <TitleL>Create an Account</TitleL>
+        </TextContainer>
         <FormContainer>
           <Title>Register</Title>
-          <form onSubmit={handleSubmit(handleRegister)}>
-            {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          <form onSubmit={handleRegister}>
             <Label>Email:</Label>
-            <Input type="email" {...register('email', { required: 'Email is required' })} />
+            <Input type="email" name="email" placeholder="Enter your email" required />
 
-            {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
             <Label>Username:</Label>
-            <Input type="text" {...register('username', { required: 'Username is required' })} />
+            <Input type="text" name="username" placeholder="Enter your username" required />
 
-            {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
             <Label>Password:</Label>
-            <Input type="password" {...register('password1', { required: 'Password is required' })} />
+            <Input type="password" name="password" placeholder="Enter your password" required />
 
             <Label>Register As:</Label>
             <CheckboxContainer>
-             <input type="checkbox" {...register('role', { value: 'Developer' })} />
-              <label>Developer</label>
+              <CheckboxInput type="checkbox" name="role" value="Developer" />
+              <CheckboxLabel>Developer</CheckboxLabel>
             </CheckboxContainer>
             <CheckboxContainer>
-             <input type="checkbox" {...register('role', { value: 'Advertiser' })} />
-              <label>Advertiser</label>
+              <CheckboxInput type="checkbox" name="role" value="Advertiser" />
+              <CheckboxLabel>Advertiser</CheckboxLabel>
             </CheckboxContainer>
-
-            {errors.isDeveloper && <ErrorMessage>{errors.isDeveloper.message}</ErrorMessage>}
-            {errors.isAdvertiser && <ErrorMessage>{errors.isAdvertiser.message}</ErrorMessage>}
 
             <SubmitButton type="submit">Register</SubmitButton>
           </form>
