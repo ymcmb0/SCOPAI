@@ -77,13 +77,37 @@ const CheckboxContainer = styled.div`
 
 const CheckboxInput = styled.input`
   margin-right: 8px;
-  margin-left: px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  appearance: none;
+  border: 2px solid #000000;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+
+  &:checked::after {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #000000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
+
+
 
 const CheckboxLabel = styled.label`
   color: #000000;
-  
+  display: inline-block; /* Ensures inline-block layout */
+  border-radius: 50%; /* Make the label circular */
 `;
+
 
 const SubmitButton = styled.button`
   background-color: #0C2D48;
