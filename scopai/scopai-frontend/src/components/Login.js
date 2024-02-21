@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 const LoginContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
   height: 100vh;
   background-image: url(\Home.png);
@@ -15,38 +15,42 @@ const LoginContainer = styled.div`
 `;
 
 const BorderedFormContainer = styled.div`
-  border: 2px solid #145DA0;
-  border-radius: 10px;
-  width: 28%;
-  height: auto;
+  border: 2px solid #B1D4E0;
+  width: 38%;
+  height: 100vh;
   background-color: #B1D4E0;
   overflow: hidden;
-`;
-
-const LogoAndTextContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  background-color: #145DA0;
-  align-text: center;
-`;
-
-const LogoImage = styled.img`
-  width: 80px;
-  margin-left: 65px;
   
 `;
 
-const TitleL = styled.h2`
+const TextContainer = styled.div`
   color: #000000;
-  text-align: center;
-  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Align content horizontally to the center */
+  padding: 10px;
+`;
+
+
+// const LogoImage = styled.img`
+//   width: 80px;
+//   margin-left: 65px;
+  
+// `;
+
+const TitleL = styled.h1`
+  color: #000000;
+  font-size: 25px;
+  text-align:center;
+  margin-top: 120px;
+  margin-bottom: 0px;
+  
 `;
 
 const Title = styled.h2`
-  color: #333333;
+  color: #000000;
   text-align: center;
-  margin: 10px;
+  margin-top: 10px;
 `;
 
 const FormContainer = styled.div`
@@ -77,6 +81,7 @@ const SubmitButton = styled.button`
   padding: 10px;
   border: none;
   border-radius: 4px;
+  margin-top: 10px;
   margin-bottom: 10px;
   cursor: pointer;
   width: 80%;
@@ -139,10 +144,9 @@ const Login = () => {
   return (
     <LoginContainer>
       <BorderedFormContainer>
-        <LogoAndTextContainer>
-          <LogoImage src="/Logologin.png" alt="SCOPAI Logo" />
-          <TitleL>SCOPAI</TitleL>
-        </LogoAndTextContainer>
+        { <TextContainer>
+          <TitleL>Sign into your account</TitleL>
+        </TextContainer> }
         <FormContainer>
           <Title>Login</Title>
           {error && <ErrorMessage>{error}</ErrorMessage>}
