@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBrain, faClock, faLock, faNetworkWired } from '@fortawesome/free-solid-svg-icons';
 
 const FeaturePageWrapper = styled.div`
-  background-image: url('/featureback.jpg');
+  background-image: url('/Home.png');
   background-color: black;
   background-repeat: no-repeat;
   background-size: cover;

@@ -6,7 +6,7 @@ const HeaderContainer = styled.header`
   position: fixed;
   max-width:1400px;
   width: 100%;
-  background-color: ${({ scrolled }) => (scrolled ? 'blue' : 'transparent')};
+  background-color: ${({ scrolled }) => (scrolled ? '#0C2D48' : 'transparent')};
   transition: background-color 0.3s;
   z-index: 1000;
   font-family: 'poppins', sans-serif;
@@ -42,7 +42,7 @@ const Navigation = styled.nav`
 `;
 
 const NavigationLink = styled(NavLink)`
-  color: ${({ textColor }) => textColor || '#fff'};
+  color: ${({ textColor }) => textColor || '#0C2D48'};
   text-decoration: none;
   margin: 0 -50px; /* Adjusted margin */
   font-size: 1.1 rem;

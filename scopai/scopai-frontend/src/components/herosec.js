@@ -26,7 +26,8 @@ const TextContainer = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  margin: 0;
+  margin-bottom: 10px;
+  color: #0C2D48;
 `;
 
 const HeroParagraph = styled.p`
@@ -37,7 +38,7 @@ const GetStartedButton = styled.a`
   display: inline-block;
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #4caf50;
+  background-color: #0C2D48;
   color: white;
   text-decoration: none;
   border-radius: 5px;
