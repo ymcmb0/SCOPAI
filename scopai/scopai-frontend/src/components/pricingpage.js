@@ -15,6 +15,7 @@ const Title = styled.h2`
   font-size: 36px;
   margin-bottom: 30px;
   text-align: center;
+  color: #0C2D48;
 `;
 
 const PlansContainer = styled.div`
@@ -101,7 +102,7 @@ const PricingPage = () => {
     {
       name: 'Combo Plan',
       price: '$49.99/month',
-      features: ['All Features from Developer and Advertiser Plans', 'Exclusive Combining Power'],
+      features: ['All Features from Developer and Advertiser Plans', 'ABC'],
       image: 'https://via.placeholder.com/300', // Placeholder image URL
     },
   ];

@@ -25,6 +25,7 @@ const FeaturePageWrapper = styled.div`
 const Title = styled.h2`
   font-size: 36px;
   margin: 0px;
+  color: #0C2D48;
 `;
 
 const FeaturesContainer = styled.div`

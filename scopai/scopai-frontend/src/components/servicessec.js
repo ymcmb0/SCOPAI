@@ -11,7 +11,7 @@ const ServicesSectionWrapper = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  color: black;
+  color: #0C2D48;
   font-size: 2rem;
   margin-bottom: 20px;
 `;
