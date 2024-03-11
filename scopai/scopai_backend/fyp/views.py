@@ -1,7 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate
-from .models import CustomUser
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from .models import CustomUser, AdPoster
+from .serializers import CustomUserSerializer, CustomAuthenticationSerializer, AdPosterSerializer
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -26,3 +31,14 @@ def user_login(request):
     else:
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
+
+# Add the snippet provided below
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def upload_ad_poster(request):
+    if request.method == 'POST':
+        serializer = AdPosterSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)

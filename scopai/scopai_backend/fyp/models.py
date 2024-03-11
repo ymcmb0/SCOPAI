@@ -32,3 +32,9 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.username} - {self.role}"
+
+class AdPoster(models.Model):
+    image = models.ImageField(upload_to='ad_posters/')
+
+    def __str__(self):
+        return f"Ad Poster - {self.id}"
