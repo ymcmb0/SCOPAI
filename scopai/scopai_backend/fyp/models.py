@@ -35,6 +35,4 @@ class CustomUser(AbstractUser):
 
 class AdPoster(models.Model):
     image = models.ImageField(upload_to='ad_posters/')
-
-    def __str__(self):
-        return f"Ad Poster - {self.id}"
+    link = models.URLField()

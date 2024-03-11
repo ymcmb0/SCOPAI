@@ -32,7 +32,6 @@ def user_login(request):
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
 
-# Add the snippet provided below
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def upload_ad_poster(request):

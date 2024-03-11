@@ -11,8 +11,7 @@ class CustomAuthenticationSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
 
-# The AdPosterSerializer should come after the AdPoster model is imported
 class AdPosterSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdPoster
-        fields = ['image']
+        fields = ['image', 'link']
