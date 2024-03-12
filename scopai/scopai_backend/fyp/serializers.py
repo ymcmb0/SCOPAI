@@ -15,3 +15,8 @@ class AdPosterSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdPoster
         fields = ['image', 'link']
+
+class AdPosterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdPoster
+        fields = ['image', 'link']
