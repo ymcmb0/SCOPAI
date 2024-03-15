@@ -102,32 +102,23 @@ const Register = () => {
  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const handleRegister = async (data) => {
-    console.log('Registration payload:', data);
-    try {
-      if (!data.isDeveloper && !data.isAdvertiser) {
-        throw new Error('Please select either Developer or Advertiser.');
-      }
-
-      const response = await fetch('http://localhost:8000/api/register/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      }
-    catch (error) {
-      console.error('Registration failed', error);
-      // Handle registration failure, display error message to the user
-      if (error.response) {
-        // Handle HTTP errors (non-2xx responses)
-        console.error('HTTP error:', error.response.data);
-      } else if (error.message) {
-        // Handle other errors
-        console.error('Error:', error.message);
-      }
+  console.log('Registration payload:', data);
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/api/register', data); // Use axios for making the POST request
+    console.log('Registration successful:', response.data);
+    // Optionally, you can redirect the user to another page or show a success message
+  } catch (error) {
+    console.error('Registration failed', error);
+    // Handle registration failure, display error message to the user
+    if (error.response) {
+      // Handle HTTP errors (non-2xx responses)
+      console.error('HTTP error:', error.response.data);
+    } else if (error.message) {
+      // Handle other errors
+      console.error('Error:', error.message);
     }
-  };
+  }
+};
 
   return (
     <RegisterContainer>
@@ -149,20 +140,20 @@ const Register = () => {
 
             {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
             <Label>Password:</Label>
-            <Input type="password" {...register('password1', { required: 'Password is required' })} />
+            <Input type="password" {...register('password', { required: 'Password is required' })} />
 
-            <Label>Register As:</Label>
-            <CheckboxContainer>
-             <input type="checkbox" {...register('role', { value: 'Developer' })} />
-              <label>Developer</label>
-            </CheckboxContainer>
-            <CheckboxContainer>
-             <input type="checkbox" {...register('role', { value: 'Advertiser' })} />
-              <label>Advertiser</label>
-            </CheckboxContainer>
-
-            {errors.isDeveloper && <ErrorMessage>{errors.isDeveloper.message}</ErrorMessage>}
-            {errors.isAdvertiser && <ErrorMessage>{errors.isAdvertiser.message}</ErrorMessage>}
+//            <Label>Register As:</Label>
+//            <CheckboxContainer>
+//             <input type="checkbox" {...register('role', { value: 'Developer' })} />
+//              <label>Developer</label>
+//            </CheckboxContainer>
+//            <CheckboxContainer>
+//             <input type="checkbox" {...register('role', { value: 'Advertiser' })} />
+//              <label>Advertiser</label>
+//            </CheckboxContainer>
+//
+//            {errors.isDeveloper && <ErrorMessage>{errors.isDeveloper.message}</ErrorMessage>}
+//            {errors.isAdvertiser && <ErrorMessage>{errors.isAdvertiser.message}</ErrorMessage>}
 
             <SubmitButton type="submit">Register</SubmitButton>
           </form>
