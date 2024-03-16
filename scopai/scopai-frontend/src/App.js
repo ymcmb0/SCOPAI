@@ -8,6 +8,8 @@ import ServicesSection from './components/servicessec';
 import Register from './components/Register';
 import Login from './components/Login';
 import AdvertisementPage from './components/advertisement'; // Import AdvertisementPage component
+import AdUploadForm from './components/AdUploadForm';
+import AdList from './components/AdList';
 
 function App() {
   useEffect(() => {
@@ -28,6 +30,8 @@ function App() {
         <Route path="/services" element={<ServicesSection />} />
         <Route path="/about" element={<AboutSection />} />
         <Route path="/advertisement" element={<AdvertisementPage />} /> {/* Use AdvertisementPage component */}
+        <Route path="/upload-ad" element={<AdUploadForm />} />
+        <Route path="/ad-list" element={<AdList />} />
       </Routes>
     </Router>
   );

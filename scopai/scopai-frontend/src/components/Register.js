@@ -142,7 +142,7 @@ const Register = () => {
   const [error, setError] = useState('');
 
   const handleRegister = async (data) => {
-    console.log('Registration payload:', data);
+  console.log('Registration payload:', data);
     try {
       if (!data.role) {
         throw new Error('Please select either Developer or Advertiser.');
