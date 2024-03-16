@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { IoIosArrowUp } from "react-icons/io";
-import { Inter } from "@fontsource/inter";
+//import { Inter } from "@fontsource/inter";
 
 const FooterWrapper = styled.footer`
-  background-color: #000; /* Black background */
+  background-color: #0C2D48; /* Black background */
   padding: 30px 10px 100px; /* Adjusted padding for better spacing */
   display: flex;
   position:relative;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const ServicesSectionWrapper = styled.section`
   background-color: #f5f5f5;
-  background-image: url('/aboutsec.jpg');
+  background-image: url('/Home.png');
   background-repeat:no-repeat;
   background-size:cover;
   padding: 80px 20px;
@@ -11,7 +11,7 @@ const ServicesSectionWrapper = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  color: black;
+  color: #0C2D48;
   font-size: 2rem;
   margin-bottom: 20px;
 `;

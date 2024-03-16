@@ -6,13 +6,16 @@ const PricingPageWrapper = styled.div`
   position: relative;
   overflow: hidden;
   padding: 80px;
-  background-color: #f4f4f4; /* Set background color */
+  background-size:cover;
+  background-image: url('/Home.png');
+  background-repeat:no-repeat;
 `;
 
 const Title = styled.h2`
   font-size: 36px;
   margin-bottom: 30px;
   text-align: center;
+  color: #0C2D48;
 `;
 
 const PlansContainer = styled.div`
@@ -20,12 +23,16 @@ const PlansContainer = styled.div`
   justify-content: space-around;
   align-items: flex-start;
   overflow-x: auto;
+  
 `;
 
-const Plan = styled.div`
+
+const Plan = styled.div` 
+  word-wrap: break-word; /* Apply word wrap to long words */
   width: 300px;
   margin: 20px;
   padding: 30px;
+  
   border: 1px solid #ddd;
   border-radius: 8px;
   text-align: center;
@@ -50,12 +57,12 @@ const Plan = styled.div`
     list-style-type: none;
     padding: 0;
   }
-
+  
   li {
     margin: 10px 0;
     color: #555;
+    overflow-wrap: break-word;
   }
-
   .price {
     font-size: 28px;
     margin-top: 30px;
@@ -95,7 +102,7 @@ const PricingPage = () => {
     {
       name: 'Combo Plan',
       price: '$49.99/month',
-      features: ['All Features from Developer and Advertiser Plans', 'Exclusive Combining Power'],
+      features: ['All Features from Developer and Advertiser Plans', 'ABC'],
       image: 'https://via.placeholder.com/300', // Placeholder image URL
     },
   ];

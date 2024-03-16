@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './header';
 import Footer from './footer';
 import FeaturePage from './featuressection';
@@ -14,8 +14,11 @@ const LandingPage = () => {
   const pricingRef = useRef(null);
   const servicesRef = useRef(null);
   const aboutRef = useRef(null);
-
+  const navigate = useNavigate()
   useEffect(() => {
+    if(!localStorage.getItem("user")){
+      navigate("/login");
+    }
     const scrollToSection = (ref) => {
       if (ref.current) {
         ref.current.scrollIntoView({ behavior: 'smooth' });
@@ -39,7 +42,7 @@ const LandingPage = () => {
       default:
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [location]);
+  }, [location, navigate]);
 
   return (
     <>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   position: fixed;
   max-width:1400px;
   width: 100%;
-  background-color: ${({ scrolled }) => (scrolled ? 'black' : 'transparent')};
+  background-color: ${({ scrolled }) => (scrolled ? '#0C2D48' : 'transparent')};
   transition: background-color 0.3s;
   z-index: 1000;
   font-family: 'poppins', sans-serif;
@@ -42,7 +42,7 @@ const Navigation = styled.nav`
 `;
 
 const NavigationLink = styled(NavLink)`
-  color: ${({ textColor }) => textColor || '#fff'};
+  color: ${({ textColor }) => textColor || '#0C2D48'};
   text-decoration: none;
   margin: 0 -50px; /* Adjusted margin */
   font-size: 1.1 rem;
@@ -97,24 +97,33 @@ const DropdownItem = styled(NavLink)`
   margin: 5px 0;
 `;
 
+
+
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [textColor, setTextColor] = useState('#fff');
   const [showOptions, setShowOptions] = useState(false);
+  const navigate = useNavigate();
+  const [login, setLogin] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
     };
-
+    if(!localStorage.getItem("user")){
+      navigate("/login")
+    }
     window.addEventListener('scroll', handleScroll);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
+    if(!localStorage.getItem("user") && login){
+      navigate("/login")
+    }
     const updateTextColor = () => {
       const bodyStyles = getComputedStyle(document.body);
       const backgroundColor = bodyStyles.backgroundColor;
@@ -135,11 +144,16 @@ const Header = () => {
     return () => {
       window.removeEventListener('resize', updateTextColor);
     };
-  }, []);
+  }, [navigate]);
 
   const handleOptionsToggle = (status) => {
     setShowOptions(status);
   };
+  const handleLogout= () => {
+    localStorage.clear();
+    // navigate("/login");
+    setLogin(true)
+  }
 
   return (
     <HeaderContainer scrolled={scrolled}>
@@ -175,7 +189,7 @@ const Header = () => {
               onMouseEnter={() => handleOptionsToggle(true)}
               onMouseLeave={() => handleOptionsToggle(false)}
             >
-              <DropdownItem to="/login">Login</DropdownItem>
+              <DropdownItem onClick={()=> handleLogout()}>Logout</DropdownItem>
               <DropdownItem to="/register">Signup</DropdownItem>
             </Dropdown>
           )}
