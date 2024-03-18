@@ -109,11 +109,11 @@ const Login = () => {
     if(localStorage.getItem("user")){
       navigate("/home")
     }
-  },[navigate
-]);
+  },[navigate]);
+
   const handleLogin = async () => {
   try {
-    const response = await axios.post('http://localhost:8000/api/login', {
+    const response = await axios.post('http://127.0.0.1:8000/api/login', {
       email: email,
       password: password,
     });

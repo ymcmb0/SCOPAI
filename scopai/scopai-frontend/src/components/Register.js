@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
+// Styled components
 const RegisterContainer = styled.div`
   display: flex;
   justify-content: right;
@@ -21,6 +22,7 @@ const BorderedFormContainer = styled.div`
   background-color: #B1D4E0;
   overflow: hidden;
   padding: 10px;
+  
 `;
 
 const TextContainer = styled.div`
@@ -29,12 +31,14 @@ const TextContainer = styled.div`
   justify-content: center;
   padding: 20px;
   margin-top: 3px;
+  
 `;
 
 const TitleL = styled.h1`
   color: #000000;
   font-size: 25px;
   text-align: center;
+  
   margin-bottom: 0px;
 `;
 
@@ -42,30 +46,33 @@ const Title = styled.h2`
   color: #000000;
   text-align: center;
   margin-top: 0px;
+  margin-top: 80px;
 `;
 
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: left;
+  margin-left: 10px;
   
 `;
 
 const Label = styled.label`
 display: block;
-margin-left: 60px;
+margin-left: 80px;
 margin-bottom: 7px;
 text-align: left; /* Align the label text to the left */
 width: 80%; /* Adjust the width if needed */
 `;
 
 const Input = styled.input`
-  margin-left: 60px;
-  width: 80%;
+  margin-left: 80px;
+  width: 70%;
   padding: 8px;
   margin-bottom: 16px;
   border: 1px solid #cccccc;
   border-radius: 4px;
+  
 `;
 
 const CheckboxContainer = styled.div`
@@ -73,7 +80,7 @@ const CheckboxContainer = styled.div`
   align-items: center;
   margin-bottom: 16px;
   width: 80%;
-  margin-left: 60px;
+  margin-left: 80px;
 `;
 
 const CheckboxInput = styled.input`
@@ -84,6 +91,7 @@ const CheckboxInput = styled.input`
   appearance: none;
   border: 2px solid #000000;
   outline: none;
+  
   cursor: pointer;
   position: relative;
 
@@ -107,6 +115,7 @@ const CheckboxLabel = styled.label`
   color: #000000;
   display: inline-block; /* Ensures inline-block layout */
   border-radius: 50%; /* Make the label circular */
+  margin-left: 80px;
 `;
 
 
@@ -114,13 +123,14 @@ const SubmitButton = styled.button`
   background-color: #0C2D48;
   margin-left: 60px;
   color: #ffffff;
+  margin-left: 80px;
   padding: 10px;
   border: none;
   border-radius: 4px;
   margin-top: 10px;
   margin-bottom: 10px;
   cursor: pointer;
-  width: 80%;
+  width: 70%;
 
   &:hover {
     background-color: #2E8BC0;
@@ -148,7 +158,7 @@ const Register = () => {
   try {
     const response = await axios.post('http://localhost:8000/api/register', data); // Use axios for making the POST request
     console.log('Registration successful:', response.data);
-    navigate("/login");
+    navigate("/home");
     // Optionally, you can redirect the user to another page or show a success message
   } catch (error) {
     console.error('Registration failed', error);
@@ -163,52 +173,51 @@ const Register = () => {
   }
 };
 
-return (
-  <RegisterContainer>
-    <BorderedFormContainer>
-      <TextContainer>
-        <TitleL>Create an Account</TitleL>
-      </TextContainer>
-      <FormContainer>
-        <Title>Register</Title>
-        <ErrorMessage>
-      {Object.values(errors).map((error, index) => (
-        <div key={index}>{error.message}</div>
-      ))}
-    </ErrorMessage>
-        <form onSubmit={handleRegister}>
-          <Label>Email:</Label>
-          <Input type="email" name="email" placeholder="Enter your email" required />
+  return (
+    <RegisterContainer>
+      <BorderedFormContainer>
+       
+        <FormContainer>
+          <Title>Register</Title>
+          <form onSubmit={handleSubmit(handleRegister)}>
+            {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+            <Label>Email:</Label>
+            <Input type="email" {...register('email', { required: 'Email is required' })} />
 
-          <Label>Username:</Label>
-          <Input type="text" name="username" placeholder="Enter your username" required />
+            {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
+            <Label>Username:</Label>
+            <Input type="text" {...register('username', { required: 'Username is required' })} />
 
-          <Label>Password:</Label>
-          <Input type="password" name="password" placeholder="Enter your password" required />
+            {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+            <Label>Password:</Label>
+            <Input type="password" {...register('password', { required: 'Password is required' })} />
 
-          <Label>Register As:</Label>
-          <CheckboxContainer>
-            <CheckboxInput type="checkbox" name="role" value="Developer" />
-            <CheckboxLabel>Developer</CheckboxLabel>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <CheckboxInput type="checkbox" name="role" value="Advertiser" />
-            <CheckboxLabel>Advertiser</CheckboxLabel>
-          </CheckboxContainer>
+           <Label>Register As:</Label>
+         <CheckboxContainer>
+         <input type="checkbox" {...register('role', { value: 'Developer' })} />
+          <label>Developer</label>
+        </CheckboxContainer>
+         <CheckboxContainer>
+            <input type="checkbox" {...register('role', { value: 'Advertiser' })} />
+              <label>Advertiser</label>
+            </CheckboxContainer>
 
-          <SubmitButton type="submit">Register</SubmitButton>
-        </form>
+            {errors.isDeveloper && <ErrorMessage>{errors.isDeveloper.message}</ErrorMessage>}
+            {errors.isAdvertiser && <ErrorMessage>{errors.isAdvertiser.message}</ErrorMessage>}
 
-        <RegisterLink>
-          Already registered? <a href="/login">Login here</a>
-        </RegisterLink>
-        <RegisterLink>
-          Goto Homepage <a href="/home">Click here</a>
-        </RegisterLink>
-      </FormContainer>
-    </BorderedFormContainer>
-  </RegisterContainer>
-);
+            <SubmitButton type="submit">Register</SubmitButton>
+          </form>
+
+          <RegisterLink>
+            Already registered? <a href="/login">Login here</a>
+          </RegisterLink>
+          <RegisterLink>
+            Goto Homepage <a href="/home">Click here</a>
+          </RegisterLink>
+        </FormContainer>
+      </BorderedFormContainer>
+    </RegisterContainer>
+  );
 };
 
 export default Register;
