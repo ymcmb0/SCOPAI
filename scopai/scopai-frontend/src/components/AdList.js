@@ -35,7 +35,7 @@ const AdList = () => {
       <div>
         {ads.map(ad => (
           <div key={ad.id}>
-            <img src={ad.image} alt="Ad Poster" />
+            <img src={`http://localhost:3000/ad_posters/`} alt="Ad Poster" />
             <p>{ad.link}</p>
             <p>{ad.description}</p>
           </div>
