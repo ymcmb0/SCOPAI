@@ -43,6 +43,6 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 
     
 class AdPoster(models.Model):
-    image = models.ImageField(upload_to='ad_posters/')
+    image = models.ImageField(upload_to='images/')
     link = models.URLField()
     description = models.TextField()  

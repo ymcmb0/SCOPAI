@@ -84,7 +84,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -118,15 +117,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 # settings.py
+
+# settings.py
+
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+# settings.py
+
+
+
 AUTH_USER_MODEL = 'fyp.AppUser'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'fyp/static'),
+    os.path.join(BASE_DIR, 'media/images'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_WHITELIST = ["http://127.0.0.1:3000",
@@ -136,3 +145,7 @@ CORS_ALLOWED_ORIGINS = [
 "http://localhost:3000"
 ]
 CORS_ALLOWED_CREDENTIALS=True
+
+
+MEDIA_ROOT = BASE_DIR/'media'
+MEDIA_URL = '/media/'
