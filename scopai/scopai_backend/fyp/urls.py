@@ -8,4 +8,5 @@ urlpatterns = [
     path('user', views.UserView.as_view(), name='user'),
     path('adupload', views.AdUpload.as_view(), name='adupload'),
     path('adlist', views.AdList.as_view(), name='adlist'),
+    path('make_payment', views.PaymentAPI.as_view(), name='make_payment')
 ]
