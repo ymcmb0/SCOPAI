@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
@@ -6,6 +7,16 @@ from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerial
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
 from .models import AdPoster
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from .token import account_activation_token
+from .models import AppUser
 from .serializers import CardInformationSerializer
 import stripe
 
@@ -25,9 +36,24 @@ class UserRegister(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.create(clean_data)
             if user:
+                self.send_verification_email(user, request)  # Call the method to send verification email
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    def send_verification_email(self, user, request):
+        try:
+            current_site = get_current_site(request)
+            subject = 'Activate Your Account'
+            message = render_to_string('registration/email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            plain_message = strip_tags(message)
+            send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [user.email], html_message=message)
+        except Exception as e:
+            print(f"Error sending verification email: {e}")
 
 class UserLogin(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -41,8 +67,12 @@ class UserLogin(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.check_user(data)
             login(request, user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
+            subscription_status = user.subscription
+            response_data = {
+                'user': serializer.data,
+                'subscription_status': subscription_status,
+            }
+        return Response(response_data, status=status.HTTP_200_OK)
 
 class UserLogout(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -87,11 +117,11 @@ from rest_framework import status
 from .serializers import CardInformationSerializer
 import stripe
 
-PLAN_IDS = {
-    'advertiser': 'prod_Pn8kwoLGc780dI',
-    'developer': 'prod_Pn8hSeRuz1Tao4',
-    'both': 'prod_Pn8jwuvUCpJJiQ',
-}
+# PLAN_IDS = {
+#     'advertiser': 'prod_Pn8kwoLGc780dI',
+#     'developer': 'prod_Pn8hSeRuz1Tao4',
+#     'both': 'prod_Pn8jwuvUCpJJiQ',
+# }
 
 class PaymentAPI(APIView):
     serializer_class = CardInformationSerializer
@@ -113,6 +143,16 @@ class PaymentAPI(APIView):
             if selected_plan in self.PLAN_IDS:
                 plan_id = self.PLAN_IDS[selected_plan]
                 response = self.create_subscription(data_dict=data_dict, plan_id=plan_id)
+                if response.get('status') == status.HTTP_201_CREATED:
+                    # Update subscription field to True for the user
+                    email = data_dict.get('email', '')
+                    if email:
+                        try:
+                            user = AppUser.objects.get(email=email)
+                            user.subscription = True
+                            user.save()
+                        except AppUser.DoesNotExist:
+                            pass
             else:
                 response = {'error': 'Invalid subscription plan selected.', 'status': status.HTTP_400_BAD_REQUEST}
         else:
@@ -122,21 +162,28 @@ class PaymentAPI(APIView):
 
     def create_subscription(self, data_dict, plan_id):
         try:
-            # Create a new customer in Stripe
             customer = stripe.Customer.create(
-                source=data_dict['pm_card_token']  # Assuming pm_card_token is part of your CardInformationSerializer
+                source=data_dict['pm_card_token'],
+                email=data_dict['email'],
+                name=data_dict['name']  
             )
 
-            # Create a subscription for the customer with a trial period
-            subscription = stripe.Subscription.create(
+            stripe.Subscription.create(
                 customer=customer.id,
                 items=[
                     {
-                        'price': plan_id,  # The ID of the price associated with the plan
+                        'price': plan_id,
+                        'quantity': 1,  
                     },
                 ],
-                trial_end='now',  # Indicates the trial period ends immediately
+                collection_method='charge_automatically'
             )
+
+            # Update user subscription status
+            user_email = data_dict['email']
+            user = AppUser.objects.get(email=user_email)
+            user.subscription = True
+            user.save()
 
             return {'message': 'Subscription created successfully.', 'status': status.HTTP_201_CREATED}
         except stripe.error.StripeError as e:

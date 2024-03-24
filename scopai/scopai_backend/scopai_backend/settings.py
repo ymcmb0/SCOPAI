@@ -45,6 +45,15 @@ INSTALLED_APPS = [
     'fyp.apps.FypConfig',
 
 ]
+# settings.py
+
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # SMTP server address
+EMAIL_PORT = 587  # Port for SMTP server
+EMAIL_USE_TLS = True  # Whether to use TLS (True/False)
+EMAIL_HOST_USER = 'abdullahrafique266@gmail.com'  # Your email address for sending emails
+EMAIL_HOST_PASSWORD = 'pmpv dweu fzkh ssdp'  # Your email password (if required)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

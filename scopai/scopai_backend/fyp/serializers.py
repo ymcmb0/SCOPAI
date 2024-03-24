@@ -17,21 +17,20 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 		return user_obj
 
 class UserLoginSerializer(serializers.Serializer):
-	email = serializers.EmailField()
-	password = serializers.CharField()
-	##
-	def check_user(self, clean_data):
-		user = authenticate(username=clean_data['email'], password=clean_data['password'])
-		if not user:
-			raise ValidationError('user not found')
-		return user
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+    def check_user(self, clean_data):
+        user = authenticate(username=clean_data['email'], password=clean_data['password'])
+        if not user:
+            raise ValidationError('user not found')
+        return user
 
 class UserSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = UserModel
-		fields = ('email', 'username')
+    class Meta:
+        model = UserModel
+        fields = ('email', 'username')
 		
-
 
 
 class AdPosterSerializer(serializers.ModelSerializer):
@@ -69,5 +68,6 @@ class CardInformationSerializer(serializers.Serializer):
     expiry_year = serializers.CharField(max_length=150, required=True)
     cvc = serializers.CharField(max_length=150, required=True)
     selected_plan = serializers.ChoiceField(choices=('advertiser', 'developer', 'both'), required=True)
-
+    email = serializers.EmailField(required=True)
+    name = serializers.CharField(max_length=255, required=True)
     
