@@ -107,7 +107,7 @@ const Login = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if(localStorage.getItem("user")){
-      navigate("/home")
+      navigate("/")
     }
   },[navigate]);
 
@@ -121,7 +121,8 @@ const Login = () => {
     console.log('Login successful:', response);
     if(response.status === 200){
       localStorage.setItem("user",email)
-      navigate("/home");
+      localStorage.setItem("subscribed_user", response.data.subscription_status)
+      navigate("/");
     }
    setError('');
     } catch (error) {

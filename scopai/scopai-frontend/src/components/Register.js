@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -152,13 +152,19 @@ const RegisterLink = styled.p`
 const Register = () => {
  const { register, handleSubmit, formState: { errors } } = useForm();
  const navigate = useNavigate();
+ const user = localStorage.getItem("user");
 
+ useEffect(()=>{
+  if(user){
+    navigate('/');
+  }
+ },[navigate])
   const handleRegister = async (data) => {
   console.log('Registration payload:', data);
   try {
     const response = await axios.post('http://localhost:8000/api/register', data); // Use axios for making the POST request
     console.log('Registration successful:', response.data);
-    navigate("/home");
+    navigate("/");
     // Optionally, you can redirect the user to another page or show a success message
   } catch (error) {
     console.error('Registration failed', error);

@@ -42,7 +42,7 @@ const Navigation = styled.nav`
 `;
 
 const NavigationLink = styled(NavLink)`
-  color: ${({ textColor }) => textColor || '#0C2D48'};
+  color: ${({ textColor }) => textColor || '#ffff'};
   text-decoration: none;
   margin: 0 -50px; /* Adjusted margin */
   font-size: 1.1 rem;
@@ -105,6 +105,7 @@ const Header = () => {
   const [showOptions, setShowOptions] = useState(false);
   const navigate = useNavigate();
   const [login, setLogin] = useState(false);
+  const user_email = localStorage.getItem("user");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -177,6 +178,7 @@ const Header = () => {
             About
           </NavigationLink>
         </Navigation>
+        <h5>{user_email}</h5>
         <JoinButtonContainer
           onMouseEnter={() => handleOptionsToggle(true)}
           onMouseLeave={() => handleOptionsToggle(false)}

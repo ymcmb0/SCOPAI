@@ -121,7 +121,7 @@ const PricingPage = () => {
               ))}
             </ul>
             <div className="price">{plan.price}</div>
-            <Link to="/register">
+            <Link to="/makepayment">
               <button className="cta-button">Choose Plan</button>
             </Link>
           </Plan>

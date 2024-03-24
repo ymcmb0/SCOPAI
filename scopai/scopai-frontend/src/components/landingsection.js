@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './header';
 import Footer from './footer';
@@ -14,7 +14,9 @@ const LandingPage = () => {
   const pricingRef = useRef(null);
   const servicesRef = useRef(null);
   const aboutRef = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+    const subscribe = localStorage.getItem("subscribed_user");
+    console.log(subscribe)
   useEffect(() => {
     if(!localStorage.getItem("user")){
       navigate("/login");
@@ -54,9 +56,11 @@ const LandingPage = () => {
       <div ref={servicesRef}>
         <ServicesSection />
       </div>
+      {subscribe === "false" &&
       <div ref={pricingRef}>
         <PricingPage />
       </div>
+      }
 
       <div ref={aboutRef}>
         <AboutSection />
