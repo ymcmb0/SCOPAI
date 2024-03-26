@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   position: fixed;
-  max-width:1400px;
+  max-width: 1400px;
   width: 100%;
   background-color: ${({ scrolled }) => (scrolled ? '#0C2D48' : 'transparent')};
   transition: background-color 0.3s;
@@ -14,7 +14,6 @@ const HeaderContainer = styled.header`
 `;
 
 const HeaderContent = styled.div`
-
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -29,7 +28,7 @@ const Logo = styled.img`
 const LogoText = styled.span`
   color: ${({ textColor }) => textColor || '#fff'};
   font-size: 1.6rem;
-  margin-left:-10px;
+  margin-left: -10px;
   font-family: 'poppins', sans-serif;
   font-weight: bold;
 `;
@@ -55,6 +54,13 @@ const NavigationLink = styled(NavLink)`
 
 const JoinButtonContainer = styled.div`
   position: relative;
+`;
+
+const UserEmail = styled.h5`
+  color: #fff;
+  font-family: 'poppins', sans-serif;
+  font-weight: normal;
+  margin-left: 10px;
 `;
 
 const JoinButton = styled.button`
@@ -97,22 +103,20 @@ const DropdownItem = styled(NavLink)`
   margin: 5px 0;
 `;
 
-
-
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [textColor, setTextColor] = useState('#fff');
   const [showOptions, setShowOptions] = useState(false);
   const navigate = useNavigate();
   const [login, setLogin] = useState(false);
-  const user_email = localStorage.getItem("user");
+  const user_email = localStorage.getItem('user');
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
     };
-    if(!localStorage.getItem("user")){
-      navigate("/login")
+    if (!localStorage.getItem('user')) {
+      navigate('/login');
     }
     window.addEventListener('scroll', handleScroll);
 
@@ -122,8 +126,8 @@ const Header = () => {
   }, [navigate]);
 
   useEffect(() => {
-    if(!localStorage.getItem("user") && login){
-      navigate("/login")
+    if (!localStorage.getItem('user') && login) {
+      navigate('/login');
     }
     const updateTextColor = () => {
       const bodyStyles = getComputedStyle(document.body);
@@ -150,11 +154,11 @@ const Header = () => {
   const handleOptionsToggle = (status) => {
     setShowOptions(status);
   };
-  const handleLogout= () => {
+  const handleLogout = () => {
     localStorage.clear();
     // navigate("/login");
-    setLogin(true)
-  }
+    setLogin(true);
+  };
 
   return (
     <HeaderContainer scrolled={scrolled}>
@@ -162,42 +166,64 @@ const Header = () => {
         <Logo src="/Logo400x400.png" alt="SCOPAI" />
         <LogoText textColor={textColor}>SCOPAI</LogoText>
         <Navigation>
-          <NavigationLink to="/home" textColor={textColor}>
+          <NavigationLink to="/h" textColor={textColor}>
             Home
           </NavigationLink>
-          <NavigationLink to="/home#features" textColor={textColor}>
+          <NavigationLink to="/h#features" textColor={textColor}>
             Features
           </NavigationLink>
-          <NavigationLink to="/home#services" textColor={textColor}>
+          <NavigationLink to="/h#services" textColor={textColor}>
             Services
           </NavigationLink>
-          <NavigationLink to="/home#pricingpage" textColor={textColor}>
+          <NavigationLink to="/h#pricingpage" textColor={textColor}>
             Pricing
           </NavigationLink>
-          <NavigationLink to="/home#about" textColor={textColor}>
+          <NavigationLink to="/h#about" textColor={textColor}>
             About
           </NavigationLink>
+          {/* Navigation link for AdvertisementPage */}
+          <NavigationLink to="/h#advertisement" textColor={textColor}>
+            Advertisement
+          </NavigationLink>
         </Navigation>
-        <h5>{user_email}</h5>
-        <JoinButtonContainer
-          onMouseEnter={() => handleOptionsToggle(true)}
-          onMouseLeave={() => handleOptionsToggle(false)}
-        >
-          <JoinButton textColor={textColor}>
-            Join <DropdownArrow>▼</DropdownArrow>
-             {showOptions && (
-            <Dropdown
-              isOpen={showOptions}
+        {localStorage.getItem('user') ? (
+          <>
+            <UserEmail>{user_email}</UserEmail>
+            <JoinButtonContainer
               onMouseEnter={() => handleOptionsToggle(true)}
               onMouseLeave={() => handleOptionsToggle(false)}
             >
-              <DropdownItem onClick={()=> handleLogout()}>Logout</DropdownItem>
-              <DropdownItem to="/register">Signup</DropdownItem>
-            </Dropdown>
-          )}
-          </JoinButton>
-
-        </JoinButtonContainer>
+              <JoinButton textColor={textColor}>
+                Logout <DropdownArrow>▼</DropdownArrow>
+                {showOptions && (
+                  <Dropdown
+                    isOpen={showOptions}
+                    onMouseEnter={() => handleOptionsToggle(true)}
+                    onMouseLeave={() => handleOptionsToggle(false)}
+                  >
+                    <DropdownItem onClick={() => handleLogout()}>Logout</DropdownItem>
+                  </Dropdown>
+                )}
+              </JoinButton>
+            </JoinButtonContainer>
+          </>
+        ) : (
+          <JoinButtonContainer>
+            <JoinButton textColor={textColor}>
+              Join <DropdownArrow>▼</DropdownArrow>
+              {showOptions && (
+                <Dropdown
+                  isOpen={showOptions}
+                  onMouseEnter={() => handleOptionsToggle(true)}
+                  onMouseLeave={() => handleOptionsToggle(false)}
+                >
+                  <DropdownItem to="/login">Login</DropdownItem>
+                  <DropdownItem to="/register">Signup</DropdownItem>
+                </Dropdown>
+              )}
+            </JoinButton>
+          </JoinButtonContainer>
+        )}
       </HeaderContent>
     </HeaderContainer>
   );

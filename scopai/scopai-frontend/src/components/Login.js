@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import Loader from './logospinner'; 
 const LoginContainer = styled.div`
   display: flex;
   justify-content: right;
@@ -107,12 +107,14 @@ const Login = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if(localStorage.getItem("user")){
-      navigate("/")
+      navigate("/h")
     }
   },[navigate]);
-
+  const [loading, setLoading] = useState(false);
   const handleLogin = async () => {
+   
   try {
+    setLoading(true);
     const response = await axios.post('http://127.0.0.1:8000/api/login', {
       email: email,
       password: password,
@@ -122,10 +124,11 @@ const Login = () => {
     if(response.status === 200){
       localStorage.setItem("user",email)
       localStorage.setItem("subscribed_user", response.data.subscription_status)
-      navigate("/");
+      navigate("/h");
     }
    setError('');
     } catch (error) {
+      setLoading(false);
       console.error('Login failed', error);
       setError('Invalid email or password. Please try again.');
     }
@@ -143,6 +146,7 @@ const Login = () => {
 
   return (
     <LoginContainer>
+        <Loader loading={loading} />
       <BorderedFormContainer>
         { <TextContainer>
           <TitleL>Sign into your account</TitleL>

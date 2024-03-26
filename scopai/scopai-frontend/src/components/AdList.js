@@ -76,7 +76,7 @@ const AdList = () => {
 
   return (
     <>
-      <Header /> {/* Include the Header component */}
+      <Header />
       <AdSectionWrapper>
         <SectionTitle>Uploaded Ads</SectionTitle>
         <div>
@@ -89,7 +89,7 @@ const AdList = () => {
           ))}
         </div>
       </AdSectionWrapper>
-      <Footer /> {/* Include the Footer component */}
+      <Footer /> 
     </>
   );
 };

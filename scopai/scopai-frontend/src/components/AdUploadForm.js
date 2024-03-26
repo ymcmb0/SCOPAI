@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Header from './header'; // Import the Header component
-import Footer from './footer'; // Import the Footer component
+import { useNavigate } from 'react-router-dom';
+import Header from './header'; 
+import Footer from './footer'; 
 
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure the page takes up at least the full height of the viewport */
-  background-color: black; /* Black background behind the form */
+  min-height: 100vh;
+  background-image: url('/Home.png');
+  background-size: cover;
 `;
 
 const FormWrapper = styled.div`
-  margin-top: 80px; /* Add margin on top to prevent overlap with the header */
   background-image: url('/Home.png');
   background-repeat: no-repeat;
   background-size: cover;
@@ -20,24 +21,24 @@ const FormWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-grow: 1; /* Allow the form to grow to fill the remaining space */
+  flex-grow: 1;
+  margin-top: 100px; /* Adjusted margin-top */
 `;
 
 const FormContainer = styled.div`
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 40px;
   border-radius: 8px;
-  max-width: 600px; /* Limit the maximum width */
-  margin: auto; /* Center the form horizontally */
-  height: 80vh; /* Set the height to 80% of the viewport height */
+  max-width: 600px;
+  margin: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center; /* Center the form horizontally */
 `;
 
 const FormTitle = styled.h2`
   color: #0C2D48;
-  font-size: 2rem;
+  font-size: 1.5rem; /* Adjusted font size */
   margin-bottom: 20px;
 `;
 
@@ -45,29 +46,34 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%; /* Ensure form takes full width of container */
+  text-align: left;
 `;
 
 const FormField = styled.div`
   margin-bottom: 20px;
+  width: 100%; /* Ensure form fields take full width of container */
+  align-items: left;
 `;
 
 const Label = styled.label`
   font-weight: bold;
   margin-bottom: 5px;
+  text-align: left;
 `;
 
 const FileInput = styled.input`
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 300px;
+  width: 100%;
 `;
 
 const TextInput = styled.input`
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  width: 300px;
+  width: 100%;
 `;
 
 const SubmitButton = styled.button`
@@ -88,6 +94,7 @@ const AdUploadForm = () => {
   const [file, setFile] = useState(null);
   const [link, setLink] = useState('');
   const [description, setDescription] = useState('');
+  const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -120,6 +127,12 @@ const AdUploadForm = () => {
         body: formData,
       });
       console.log(response);
+      if (response.ok) {
+        // If upload is successful, navigate to '/adlist'
+        navigate('/adlist');
+      } else {
+        console.error('Error uploading ad poster:', response.statusText);
+      }
     } catch (error) {
       console.error('Error uploading ad poster:', error);
     }
@@ -127,7 +140,7 @@ const AdUploadForm = () => {
   
   return (
     <PageWrapper>
-      <Header /> {/* Add the Header component */}
+      <Header />
       <FormWrapper>
         <FormContainer>
           <FormTitle>Upload Ad Poster</FormTitle>
@@ -148,7 +161,7 @@ const AdUploadForm = () => {
           </Form>
         </FormContainer>
       </FormWrapper>
-      <Footer /> {/* Add the Footer component */}
+      <Footer />
     </PageWrapper>
   );
 };

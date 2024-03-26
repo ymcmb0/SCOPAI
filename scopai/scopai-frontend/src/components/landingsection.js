@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from './header';
 import Footer from './footer';
 import FeaturePage from './featuressection';
@@ -7,20 +7,18 @@ import PricingPage from './pricingpage';
 import AboutSection from './aboutsection';
 import ServicesSection from './servicessec';
 import HeroSec from './herosec';
+import AdvertisementPage from './advertisement'; // Import AdvertisementPage
 
 const LandingPage = () => {
   const location = useLocation();
+  console.log(location);
   const featuresRef = useRef(null);
   const pricingRef = useRef(null);
   const servicesRef = useRef(null);
   const aboutRef = useRef(null);
-  const navigate = useNavigate();
-    const subscribe = localStorage.getItem("subscribed_user");
-    console.log(subscribe)
+  const advertisementRef = useRef(null); 
+
   useEffect(() => {
-    if(!localStorage.getItem("user")){
-      navigate("/login");
-    }
     const scrollToSection = (ref) => {
       if (ref.current) {
         ref.current.scrollIntoView({ behavior: 'smooth' });
@@ -41,10 +39,13 @@ const LandingPage = () => {
       case '#services':
         scrollToSection(servicesRef);
         break;
+      case '#advertisement': 
+        scrollToSection(advertisementRef);
+        break;
       default:
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [location, navigate]);
+  }, [location]);
 
   return (
     <>
@@ -56,16 +57,15 @@ const LandingPage = () => {
       <div ref={servicesRef}>
         <ServicesSection />
       </div>
-      {subscribe === "false" &&
+      <div ref={advertisementRef}> 
+        <AdvertisementPage />
+      </div>
       <div ref={pricingRef}>
         <PricingPage />
       </div>
-      }
-
       <div ref={aboutRef}>
         <AboutSection />
       </div>
-
       <Footer />
     </>
   );

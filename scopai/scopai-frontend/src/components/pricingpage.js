@@ -28,7 +28,7 @@ const PlansContainer = styled.div`
 
 
 const Plan = styled.div` 
-  word-wrap: break-word; /* Apply word wrap to long words */
+  word-wrap: break-word; 
   width: 300px;
   margin: 20px;
   padding: 30px;
@@ -37,8 +37,8 @@ const Plan = styled.div`
   border-radius: 8px;
   text-align: center;
   overflow: hidden;
-  background-color: #fff; /* Set background color */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add subtle box shadow */
+  background-color: #fff; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
 
   h3 {
     font-size: 24px;
@@ -89,21 +89,21 @@ const PricingPage = () => {
   const plans = [
     {
       name: 'Developer Plan',
-      price: '$19.99/month',
+      price: '$15.00/month',
       features: ['Generative AI Optimization', 'Smart Contract Analysis'],
-      image: 'https://via.placeholder.com/300', // Placeholder image URL
+      image: './standard (1).png', // Placeholder image URL
     },
     {
       name: 'Advertiser Plan',
-      price: '$29.99/month',
+      price: '$10.00/month',
       features: ['Advertisement Opportunities', 'Blockchain Promotion'],
-      image: 'https://via.placeholder.com/300', // Placeholder image URL
+      image: './basic.png', // Placeholder image URL
     },
     {
       name: 'Combo Plan',
-      price: '$49.99/month',
-      features: ['All Features from Developer and Advertiser Plans', 'ABC'],
-      image: 'https://via.placeholder.com/300', // Placeholder image URL
+      price: '$25.00/month',
+      features: ['All Features from Developer' , 'Advertiser Plans'],
+      image: './standard (2).png', // Placeholder image URL
     },
   ];
 

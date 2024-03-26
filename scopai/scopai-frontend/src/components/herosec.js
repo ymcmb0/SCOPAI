@@ -72,7 +72,7 @@ const HeroSec = () => {
               to manage projects, collaborate seamlessly,
             </HeroParagraph>
             <HeroParagraph>and achieve greater efficiency.</HeroParagraph>
-            <GetStartedButton href="/register">Get Started</GetStartedButton>
+            <GetStartedButton href="/Optimize">Get Started</GetStartedButton>
           </TextContainer>
         </Hero>
         {isScrolled && (

@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
-
+import Loader from './logospinner'; 
 // Styled components
 const RegisterContainer = styled.div`
   display: flex;
@@ -154,25 +154,30 @@ const Register = () => {
  const navigate = useNavigate();
  const user = localStorage.getItem("user");
 
+ const [loading, setLoading] = useState(false);
  useEffect(()=>{
   if(user){
-    navigate('/');
+    navigate('/login');
   }
  },[navigate])
   const handleRegister = async (data) => {
   console.log('Registration payload:', data);
   try {
+    setLoading(true);
     const response = await axios.post('http://localhost:8000/api/register', data); // Use axios for making the POST request
     console.log('Registration successful:', response.data);
-    navigate("/");
+    navigate("/login");
     // Optionally, you can redirect the user to another page or show a success message
   } catch (error) {
+    setLoading(false);
     console.error('Registration failed', error);
     // Handle registration failure, display error message to the user
     if (error.response) {
+      setLoading(false);
       // Handle HTTP errors (non-2xx responses)
       console.error('HTTP error:', error.response.data);
     } else if (error.message) {
+      setLoading(false);
       // Handle other errors
       console.error('Error:', error.message);
     }
@@ -182,7 +187,7 @@ const Register = () => {
   return (
     <RegisterContainer>
       <BorderedFormContainer>
-       
+      <Loader loading={loading} />
         <FormContainer>
           <Title>Register</Title>
           <form onSubmit={handleSubmit(handleRegister)}>
