@@ -25,7 +25,7 @@ class AppUserManager(BaseUserManager):
         return self.create_user(email, username, password, **extra_fields)
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
-    user_id = models.AutoField(primary_key=True)  # Set user_id as the primary key
+    user_id = models.AutoField(primary_key=True)  
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150)
     password = models.CharField(max_length=128)

@@ -20,11 +20,6 @@ from .models import AppUser
 from .serializers import CardInformationSerializer
 import stripe
 
-# JazzCash configuration
-JAZZCASH_MERCHANT_ID = ""
-JAZZCASH_PASSWORD = ""
-JAZZCASH_RETURN_URL = "http://127.0.0.1:8000/success"
-JAZZCASH_INTEGRITY_SALT = ""
 
 
 class UserRegister(APIView):
@@ -36,7 +31,7 @@ class UserRegister(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.create(clean_data)
             if user:
-                self.send_verification_email(user, request)  # Call the method to send verification email
+                self.send_verification_email(user, request)  
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -44,7 +39,7 @@ class UserRegister(APIView):
         try:
             current_site = get_current_site(request)
             subject = 'Activate Your Account'
-            message = render_to_string('registration/email.html', {
+            message = render_to_string('registration/email2.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -126,9 +121,10 @@ import stripe
 class PaymentAPI(APIView):
     serializer_class = CardInformationSerializer
 
+    
     PLAN_IDS = {
         'advertiser': 'price_1OxYSpJAEZblQ9ZUiGmQcwZm',
-        'developer': 'price_1OxYQPJAEZblQ9ZUlNKIs37b',
+        'developer': 'price_1OyfZaJAEZblQ9ZUmBwU5Non',
         'both': 'price_1OxYSAJAEZblQ9ZUfqeWQyrD',
     }
 
@@ -144,7 +140,9 @@ class PaymentAPI(APIView):
                 plan_id = self.PLAN_IDS[selected_plan]
                 response = self.create_subscription(data_dict=data_dict, plan_id=plan_id)
                 if response.get('status') == status.HTTP_201_CREATED:
-                    # Update subscription field to True for the user
+                    # send email upon successful payment
+                    self.send_payment_confirmation_email(data_dict['email'], selected_plan)
+                    # update subscription field to True for the user
                     email = data_dict.get('email', '')
                     if email:
                         try:
@@ -179,7 +177,7 @@ class PaymentAPI(APIView):
                 collection_method='charge_automatically'
             )
 
-            # Update user subscription status
+            # update user subscription status
             user_email = data_dict['email']
             user = AppUser.objects.get(email=user_email)
             user.subscription = True
@@ -188,6 +186,17 @@ class PaymentAPI(APIView):
             return {'message': 'Subscription created successfully.', 'status': status.HTTP_201_CREATED}
         except stripe.error.StripeError as e:
             return {'error': str(e), 'status': status.HTTP_400_BAD_REQUEST}
+
+    def send_payment_confirmation_email(self, email, plan):
+        try:
+            subject = 'Payment Confirmation'
+            message = render_to_string('registration/email.html', {
+                'plan': plan,
+            })
+            plain_message = strip_tags(message)
+            send_mail(subject, plain_message, settings.EMAIL_HOST_USER, [email], html_message=message)
+        except Exception as e:
+            print(f"Error sending payment confirmation email: {e}")
 
 
 

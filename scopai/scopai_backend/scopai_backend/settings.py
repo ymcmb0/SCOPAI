@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-)gt@^mfl-lbi@fw$t8sc@+^n8hj_3y^r&sp=l7s8q%)7=x-(#h
 
 #stripe key
 STRIPE_SECRET_KEY = 'sk_test_51OxRN4JAEZblQ9ZUXxKNHf8o745ZDtSbPCuuTTDlX5fvJpmw5LEMZzXCvmpwiHZOFKLA6dbEad9X7myLf56SJ0lj00V8Bhy1f7'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51OxRN4JAEZblQ9ZU4DZDgVvg4WJ7IOBXu7GIjJGUKfLsSiEdaqMkFydOuwm1nBecSB7OMZQdmmanXpAqAPaf6RV700AERon3tx'
+STRIPE_PUBLISHABLE_KEY = 'sk_test_51OxRN4JAEZblQ9ZUXxKNHf8o745ZDtSbPCuuTTDlX5fvJpmw5LEMZzXCvmpwiHZOFKLA6dbEad9X7myLf56SJ0lj00V8Bhy1f7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,11 +49,11 @@ INSTALLED_APPS = [
 
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # SMTP server address
-EMAIL_PORT = 587  # Port for SMTP server
-EMAIL_USE_TLS = True  # Whether to use TLS (True/False)
-EMAIL_HOST_USER = 'abdullahrafique266@gmail.com'  # Your email address for sending emails
-EMAIL_HOST_PASSWORD = 'pmpv dweu fzkh ssdp'  # Your email password (if required)
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_PORT = 587  
+EMAIL_USE_TLS = True  
+EMAIL_HOST_USER = 'rizwan.nisar310@gmail.com'  
+EMAIL_HOST_PASSWORD = 'pjog mfnc fbrw pkbs' 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -152,7 +152,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_WHITELIST = ["http://127.0.0.1:3000",
-    "http://localhost:3000"]
+    "http://localhost:3001"]
 CORS_ALLOWED_ORIGINS = [
 "http://127.0.0.1:3000",
 "http://localhost:3000"

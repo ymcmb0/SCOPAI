@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AppUser  # Import your AppUser model from models.py
+from .models import AppUser  
 
-# Register your models here.
-admin.site.register(AppUser)  # Register the AppUser model with the admin
+
+admin.site.register(AppUser)  #  AppUser model 

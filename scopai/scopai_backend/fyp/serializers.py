@@ -41,32 +41,13 @@ class AdPosterSerializer(serializers.ModelSerializer):
 
 
 
-def check_expiry_month(value):
-    if not 1 <= int(value) <= 12:
-        raise serializers.ValidationError("Invalid expiry month.")
-
-
-def check_expiry_year(value):
-    today = datetime.datetime.now()
-    if not int(value) >= today.year:
-        raise serializers.ValidationError("Invalid expiry year.")
-
-
-def check_cvc(value):
-    if not 3 <= len(value) <= 4:
-        raise serializers.ValidationError("Invalid cvc number.")
-
-
 def check_payment_method(value):
     payment_method = value.lower()
     if payment_method not in ["card"]:
         raise serializers.ValidationError("Invalid payment_method.")
 
 class CardInformationSerializer(serializers.Serializer):
-    pm_card_token = serializers.CharField(max_length=150, required=True)  # Field for the card token
-    expiry_month = serializers.CharField(max_length=150, required=True)
-    expiry_year = serializers.CharField(max_length=150, required=True)
-    cvc = serializers.CharField(max_length=150, required=True)
+    pm_card_token = serializers.CharField(max_length=150, required=True)  
     selected_plan = serializers.ChoiceField(choices=('advertiser', 'developer', 'both'), required=True)
     email = serializers.EmailField(required=True)
     name = serializers.CharField(max_length=255, required=True)
