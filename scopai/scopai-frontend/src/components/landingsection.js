@@ -57,7 +57,7 @@ const LandingPage = () => {
       <div ref={servicesRef}>
         <ServicesSection />
       </div>
-      <div ref={advertisementRef}> 
+       <div ref={advertisementRef}> 
         <AdvertisementPage />
       </div>
       <div ref={pricingRef}>

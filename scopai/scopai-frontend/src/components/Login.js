@@ -166,7 +166,7 @@ const Login = () => {
             Not registered? <a href="/register">Register here</a>
           </RegisterLink>
           <RegisterLink>
-            Goto Homepage <a href="/home">Click here</a>
+            Goto Homepage <a href="/h">Click here</a>
           </RegisterLink>
         </FormContainer>
       </BorderedFormContainer>

@@ -13,7 +13,6 @@ import AdUploadForm from './components/AdUploadForm';
 import AdList from './components/AdList';
 import PaymentForm  from './components/payment';
 import Optimize from './components/codeoptimize';
-import "./App.css";
 // import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -21,15 +20,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
   const [backendMessage, setBackendMessage] = useState('');
 
- 
-
   return (
 <>
       <Routes>
         {/* Routes without Header and Footer */}
+        <Route path="/h" element={<LandingSection />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/h" element={<LandingSection />} />
 //        <Route path="/features" element={<FeaturePage />} />
 //        <Route path="/services" element={<ServicesSection />} />
 //        <Route path="/pricingpage" element={<PricingPage />} />
@@ -40,7 +37,7 @@ function App() {
           <Route path="/makepayment" element={<PaymentForm />} />
           <Route path="/Optimize" element={<Optimize />} />
         </Routes >
-    </>
+</>
   );
 }
 

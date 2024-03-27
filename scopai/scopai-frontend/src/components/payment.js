@@ -77,7 +77,7 @@ const PaymentForm = () => {
   const elements = useElements();
   useEffect(() => {
     if (!localStorage.getItem("user") || subscribe === true) {
-      navigate('/');
+      navigate('/h');
     }
   }, [navigate]);
   const [formData, setFormData] = useState({
@@ -117,7 +117,7 @@ const PaymentForm = () => {
       if (response.data.status === 201) {
         localStorage.setItem("subscription", true);
         if (localStorage.getItem("user")) {
-          navigate('/h'); // Navigate to '/h' if user is logged in
+          navigate('/h'); 
         }
       }
       setLoading(false);
