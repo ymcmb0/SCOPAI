@@ -1,12 +1,29 @@
 {% extends "admin/base.html" %}
-{% comment %} {% load i18n  eatn_tags static %} {% endcomment %}
 {% load i18n %}
 {% load static %}
-{% block title %}{{ title }} | {% trans "SCOPAI  | ADMIN " %}{% endblock %}
+
+{% block title %}{{ title }} | {% trans "SCOPAI | ADMIN" %}{% endblock %}
+
 {% block extrastyle %}
     <link rel="stylesheet" type="text/css" href="{% static "admin/admin_color.css" %}"/>
+    <style>
+        #site-name {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        #site-logo {
+            width: 50px; /* Adjust size as needed */
+            height: auto; /* Maintain aspect ratio */
+            margin-right: -10px; /* Adjust spacing */
+        }
+    </style>
 {% endblock %}
+
 {% block branding %}
-    <h1 id="site-name">{% trans "SCOPAI | ADMIN" %}</h1>
+    <h1 id="site-name">
+        <img src="{% static '/admin/Logo.png' %}" alt="Logo" id="site-logo">
+        {% trans "SCOPAI | ADMIN" %}
+    </h1>
 {% endblock %}
+
 {% block nav-global %}{% endblock %}

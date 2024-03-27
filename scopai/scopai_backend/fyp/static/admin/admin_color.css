@@ -7,13 +7,13 @@ font-size: x-large;
 h1{
 color: white;
 }
-body{
-background: black;
-background-image: url("https://wallpapercave.com/wp/wp2508260.jpg"); */
-/*  background-image: url(../images/Admin.jpg);  */
-}
+body {
+    background: black url("https://img.freepik.com/free-vector/gradient-abstract-wireframe-background_23-2149020364.jpg") no-repeat center center fixed;
+    background-size: cover;
+  }
+  
 #header {
-background:crimson;
+background:#145DA0;
 color: #fff;
 height: 78px
 }
@@ -25,7 +25,7 @@ color: #fff;
 }
 div.breadcrumbs {
 /* color: #c4dce8; */
-background: firebrick;
+background: rgb(19, 37, 80);
 }
 div.breadcrumbs a.active {
 color: #c4dce8;
@@ -50,10 +50,10 @@ background: #78afc8;
 background: #878787;
 }
 .module caption{
-background: crimson;
+background:#145DA0;
 }
 .module p{
-background: crimson;
+background:#145DA0;
 }
 .module h2, .inline-group h2 {
 background: #78afc8;
