@@ -1,28 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Footer from './footer';
+import Header from './header';
+import GalaxyBackground from './galaxybackground';
 
+// Styled components
 const AboutWrapper = styled.section`
-  border: 1px solid #000;
-  position:relative;
-  background-image: url('/Home.png');
-  background-repeat: no-repeat;
-  background-size: cover;
+  position: relative;
   background-position: center;
   width: 100%;
-  height:100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   color: #fff;
-  font-style:'bold';
-  font-size:1.2rem;
+  font-style: bold;
+  font-size: 1.3rem;
   padding: 80px;
   font-family: 'Poppins', sans-serif;
-  //margin: 0;
   overflow: hidden;
-  h2 {
-    color: #0C2D48; 
+`;
+
+const AboutContent = styled.div`
+  max-width: 600px;
+`;
+
+const AboutText = styled.p`
+  color: white;
+  font-size: 18px;
+  line-height: 1.5;
+`;
+
+const InteractiveButton = styled.button`
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #0c2d48;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2e8bc0;
   }
 `;
 
@@ -45,11 +66,24 @@ const AboutSection = () => {
     return () => setText('');
   }, []);
 
+  const handleClick = () => {
+    // Implement any interactive behavior here
+    alert('Thanks for your interest in SCOPAI! Stay tuned for updates.');
+  };
+
   return (
-    <AboutWrapper>
-      <h2 >ABOUT SCOPAI</h2>
-      <p >{text}</p>
-    </AboutWrapper>
+    <>
+      <GalaxyBackground />
+      <Header />
+      <AboutWrapper>
+        <h2>ABOUT SCOPAI</h2>
+        <AboutContent>
+          <AboutText>{text}</AboutText>
+          <InteractiveButton onClick={handleClick}>Learn More</InteractiveButton>
+        </AboutContent>
+      </AboutWrapper>
+      <Footer />
+    </>
   );
 };
 

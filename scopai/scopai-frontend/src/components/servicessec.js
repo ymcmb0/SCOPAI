@@ -1,18 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import Footer from './footer';
+import Header from './header';
+import GalaxyBackground from './galaxybackground';
 
 const ServicesSectionWrapper = styled.section`
-  background-color: #f5f5f5;
-  background-image: url('/Home.png');
-  background-repeat:no-repeat;
-  background-size:cover;
+  background-size: cover;
   padding: 80px 20px;
+
   text-align: center;
 `;
 
 const SectionTitle = styled.h2`
-  color: #0C2D48;
-  font-size: 2rem;
+ font-size: 36px;
+color:white;
+
   margin-bottom: 20px;
 `;
 
@@ -20,15 +22,24 @@ const SectionContent = styled.p`
   color: #fff;
   font-size: 1.2rem;
   margin-bottom: 30px;
+
+
 `;
 
 const ServiceCard = styled.div`
   max-width: 600px;
   margin: 0 auto 40px;
   padding: 20px;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 8px;
+  border: 1px solid black;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const ServiceIcon = styled.div`
@@ -39,12 +50,12 @@ const ServiceIcon = styled.div`
 const ServiceTitle = styled.h3`
   font-size: 24px;
   margin-bottom: 20px;
-  color: #fff;
+  color: white;
 `;
 
 const ServiceDescription = styled.p`
   font-size: 16px;
-  color: #fff;
+  color: white;
 `;
 
 const ServicesSection = () => {
@@ -71,19 +82,24 @@ const ServicesSection = () => {
   ];
 
   return (
-    <ServicesSectionWrapper>
-      <SectionTitle>Services Provided by SCOPAI</SectionTitle>
-      <SectionContent>
-        Explore our range of services designed to optimize, secure, and analyze your smart contracts using SCOPAI.
-      </SectionContent>
-      {services.map((service, index) => (
-        <ServiceCard key={index}>
-          <ServiceIcon>{service.icon}</ServiceIcon>
-          <ServiceTitle>{service.title}</ServiceTitle>
-          <ServiceDescription>{service.description}</ServiceDescription>
-        </ServiceCard>
-      ))}
-    </ServicesSectionWrapper>
+    <>
+      <GalaxyBackground />
+      <Header />
+      <ServicesSectionWrapper>
+        <SectionTitle>Services Provided by SCOPAI</SectionTitle>
+        <SectionContent>
+          Explore our range of services designed to optimize, secure, and analyze your smart contracts using SCOPAI.
+        </SectionContent>
+        {services.map((service, index) => (
+          <ServiceCard key={index}>
+            <ServiceIcon>{service.icon}</ServiceIcon>
+            <ServiceTitle>{service.title}</ServiceTitle>
+            <ServiceDescription>{service.description}</ServiceDescription>
+          </ServiceCard>
+        ))}
+      </ServicesSectionWrapper>
+      <Footer />
+    </>
   );
 };
 

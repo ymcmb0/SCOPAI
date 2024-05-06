@@ -1,13 +1,17 @@
 import './App.css';
-
+import Footer from './components/footer';
+import Header from './components/header';
 import LandingSection from './components/landingsection';
 import FeaturePage from './components/featuressection';
 import AboutSection from './components/aboutsection';
 import ServicesSection from './components/servicessec';
-// import GetStartedSection from './components/getstartedsection';
+//import GetStartedSection from './components/getstartedsection';
 import PricingPage from './components/pricingpage';
 import Register from './components/Register';
 import Login from './components/Login';
+import ResetPassword from './components/resetpassword';
+import ForgotPassword from './components/forgotpassword';
+import ManageProfile from './components/manageprofile';
 import AdvertisementPage from './components/advertisement';
 import AdUploadForm from './components/AdUploadForm';
 import AdList from './components/AdList';
@@ -24,18 +28,21 @@ function App() {
 <>
       <Routes>
         {/* Routes without Header and Footer */}
-        <Route path="/h" element={<LandingSection />} />
+        <Route path="/landingsection" element={<LandingSection />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-//        <Route path="/features" element={<FeaturePage />} />
-//        <Route path="/services" element={<ServicesSection />} />
-//        <Route path="/pricingpage" element={<PricingPage />} />
-//        <Route path="/about" element={<AboutSection />} />
+        <Route path="/profile" element={<ManageProfile />} />
+       <Route path="/features" element={<FeaturePage />} />
+        <Route path="/services" element={<ServicesSection />} />
+        <Route path="/pricingpage" element={<PricingPage />} />
+        <Route path="/about" element={<AboutSection />} />
           <Route path="/ad" element={<AdvertisementPage />} />
           <Route path="/adupload" element={<AdUploadForm />} />
           <Route path="/adlist" element={<AdList />} />
           <Route path="/makepayment" element={<PaymentForm />} />
           <Route path="/Optimize" element={<Optimize />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/password/reset/confirm/:uidb64/:token" element={<ResetPassword />} />
         </Routes >
 </>
   );

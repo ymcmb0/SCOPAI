@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 // Styled components
 const ChatContainer = styled.div`
@@ -11,7 +12,6 @@ const ChatContainer = styled.div`
 const ChatBox = styled.section`
   flex: 1;
   position: relative;
-  background-image: url('./Home.png');
   background-size: cover;
   background-position: center;
   z-index: 110;
@@ -43,7 +43,7 @@ const SolidityEditor = styled.textarea`
   margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Anta', Courier, monospace;
   min-height: 100px;
 `;
 
@@ -97,7 +97,7 @@ const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const navigate = useNavigate(); // Use useNavigate hook to navigate programmatically
-  const subscribedUser = JSON.parse(localStorage.getItem("subscription"));
+  const subscribedUser = JSON.parse(localStorage.getItem("subscribed_user"));
 
   useEffect(() => {
     if (!localStorage.getItem("user")) {
@@ -107,37 +107,42 @@ const ChatInterface = () => {
       navigate("/makepayment");
     }
   }, [navigate, subscribedUser]);
+const handleMessageSubmit = async () => {
+  if (!inputText.trim()) return;
 
-  const handleMessageSubmit = async () => {
-    if (!inputText.trim()) return;
+  try {
+    // Send the input text to the Gemini API for processing
+    const response = await axios.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyA49y0gUiUctEnwjEN3nFr_jnjiBycM-IU', {
+      contents: [{
+        parts: [{
+          text: inputText
+        }]
+      }]
+    });
 
-    // Add the input text as a message to the chat window
-    setMessages([...messages, { text: inputText, sender: 'user' }]);
+    // Log the response data to the console
+    console.log('Response from Gemini API:', response.data);
 
-    try {
-      // Send the input text to the backend for processing
-      const response = await fetch('YOUR_BACKEND_ENDPOINT', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code: inputText }),
-      });
+    // Parse the response data
+    const responseData = response.data;
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch optimized code');
-      }
-
-      // Parse the response data
-      const data = await response.json();
-
-      setMessages([...messages, { text: data.optimizedCode, sender: 'system' }]);
-    } catch (error) {
-      console.error('Error:', error.message);
+    // Check if the responseData is undefined or doesn't contain the expected structure
+    if (!responseData || !responseData.candidates || !responseData.candidates[0] || !responseData.candidates[0].content || !responseData.candidates[0].content.parts) {
+      throw new Error('Invalid response from Gemini API');
     }
 
-    setInputText('');
-  };
+    // Extract the text content from the parts array
+    const textContent = responseData.candidates[0].content.parts[0].text;
+
+    // Add the response from the Gemini API as a message to the chat window
+    setMessages(prevMessages => [...prevMessages, { text: textContent, sender: 'system' }]);
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+
+  setInputText('');
+};
+
 
   const handleChange = (event) => {
     setInputText(event.target.value);

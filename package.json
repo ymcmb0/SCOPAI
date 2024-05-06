@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@google/generative-ai": "^0.6.0",
+    "react-shimmer": "^3.2.0",
     "three": "^0.159.0"
   }
 }

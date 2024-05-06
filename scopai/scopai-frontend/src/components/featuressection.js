@@ -2,20 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBrain, faClock, faLock, faNetworkWired } from '@fortawesome/free-solid-svg-icons';
-
+import Footer from './footer';
+import Header from './header';
+import GalaxyBackground from './galaxybackground';
 const FeaturePageWrapper = styled.div`
-  background-image: url('/Home.png');
-  background-color: black;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   max-width: 1400px;
+  background:none;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  color: #fff;
+  z-index:1000;
   padding: 110px;
   font-family: 'Poppins', sans-serif;
   margin: 0;
@@ -25,7 +23,7 @@ const FeaturePageWrapper = styled.div`
 const Title = styled.h2`
   font-size: 36px;
   margin: 0px;
-  color: #0C2D48;
+  color: white;
 `;
 
 const FeaturesContainer = styled.div`
@@ -33,6 +31,7 @@ const FeaturesContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   margin-top: 30px;
+
 `;
 
 const Feature = styled.div`
@@ -42,13 +41,16 @@ const Feature = styled.div`
   text-align: center;
   position: relative;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.8);
-  background-image: url(${(props) => props.background});
-  background-size: cover;
-  background-position: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+  }
 
   .feature-content {
     color: #fff;
@@ -116,23 +118,28 @@ const FeaturePage = () => {
   ];
 
   return (
-    <FeaturePageWrapper>
-      <Title>Key Features</Title>
-      <FeaturesContainer>
-        {features.map((feature) => (
-          <Feature key={feature.id} background={feature.background}>
-            <div className="feature-content">
-              <div className="feature-icon">
-                <FontAwesomeIcon icon={feature.icon} />
+    <>
+    <GalaxyBackground />
+      <Header />
+      <FeaturePageWrapper>
+        <Title>Key Features</Title>
+        <FeaturesContainer>
+          {features.map((feature) => (
+            <Feature key={feature.id} background={feature.background}>
+              <div className="feature-content">
+                <div className="feature-icon">
+                  <FontAwesomeIcon icon={feature.icon} />
+                </div>
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+                <div className="advertisement">{feature.advertisement}</div>
               </div>
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
-              <div className="advertisement">{feature.advertisement}</div>
-            </div>
-          </Feature>
-        ))}
-      </FeaturesContainer>
-    </FeaturePageWrapper>
+            </Feature>
+          ))}
+        </FeaturesContainer>
+      </FeaturePageWrapper>
+      <Footer />
+    </>
   );
 };
 

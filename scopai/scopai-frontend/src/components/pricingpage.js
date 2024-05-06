@@ -1,44 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import Footer from './footer';
+import Header from './header';
+import GalaxyBackground from './galaxybackground';
 
+// Styled components
 const PricingPageWrapper = styled.div`
   position: relative;
   overflow: hidden;
   padding: 80px;
-  background-size:cover;
-  background-image: url('/Home.png');
-  background-repeat:no-repeat;
 `;
 
 const Title = styled.h2`
   font-size: 36px;
   margin-bottom: 30px;
   text-align: center;
-  color: #0C2D48;
+  color: #fff;
 `;
 
 const PlansContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  overflow-x: auto;
-  
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
 `;
 
-
-const Plan = styled.div` 
-  word-wrap: break-word; 
-  width: 300px;
-  margin: 20px;
+const Plan = styled.div`
   padding: 30px;
-  
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   text-align: center;
-  overflow: hidden;
-  background-color: #fff; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   h3 {
     font-size: 24px;
@@ -46,31 +40,24 @@ const Plan = styled.div`
     color: black;
   }
 
-  img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-    border-radius: 8px;
-  }
-
   ul {
     list-style-type: none;
     padding: 0;
+    margin-bottom: 20px;
   }
-  
+
   li {
     margin: 10px 0;
     color: #555;
-    overflow-wrap: break-word;
   }
+
   .price {
     font-size: 28px;
-    margin-top: 30px;
+    margin-bottom: 20px;
     color: black;
   }
 
   .cta-button {
-    margin-top: 30px;
     padding: 15px 30px;
     background-color: black;
     color: #fff;
@@ -80,7 +67,7 @@ const Plan = styled.div`
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: #0056b3;
+      background-color: rgba(0, 0, 0, 0.8);
     }
   }
 `;
@@ -91,43 +78,44 @@ const PricingPage = () => {
       name: 'Developer Plan',
       price: '$15.00/month',
       features: ['Generative AI Optimization', 'Smart Contract Analysis'],
-      image: './standard (1).png', // Placeholder image URL
     },
     {
       name: 'Advertiser Plan',
       price: '$10.00/month',
       features: ['Advertisement Opportunities', 'Blockchain Promotion'],
-      image: './basic.png', // Placeholder image URL
     },
     {
       name: 'Combo Plan',
       price: '$25.00/month',
-      features: ['All Features from Developer' , 'Advertiser Plans'],
-      image: './standard (2).png', // Placeholder image URL
+      features: ['All Features from Developer Plan', 'Advertiser Plan'],
     },
   ];
 
   return (
-    <PricingPageWrapper>
-      <Title>Pricing Plans</Title>
-      <PlansContainer>
-        {plans.map((plan, index) => (
-          <Plan key={index}>
-            <h3>{plan.name}</h3>
-            <img src={plan.image} alt={plan.name} />
-            <ul>
-              {plan.features.map((feature, idx) => (
-                <li key={idx}>{feature}</li>
-              ))}
-            </ul>
-            <div className="price">{plan.price}</div>
-            <Link to="/makepayment">
-              <button className="cta-button">Choose Plan</button>
-            </Link>
-          </Plan>
-        ))}
-      </PlansContainer>
-    </PricingPageWrapper>
+    <>
+      <GalaxyBackground />
+      <Header />
+      <PricingPageWrapper>
+        <Title>Pricing Plans</Title>
+        <PlansContainer>
+          {plans.map((plan, index) => (
+            <Plan key={index}>
+              <h3>{plan.name}</h3>
+              <ul>
+                {plan.features.map((feature, idx) => (
+                  <li key={idx}>{feature}</li>
+                ))}
+              </ul>
+              <div className="price">{plan.price}</div>
+              <Link to="/makepayment">
+                <button className="cta-button">Choose Plan</button>
+              </Link>
+            </Plan>
+          ))}
+        </PlansContainer>
+      </PricingPageWrapper>
+      <Footer />
+    </>
   );
 };
 

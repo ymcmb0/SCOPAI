@@ -2,13 +2,9 @@ import React,{useState} from 'react';
 import styled from 'styled-components';
 // Styled components
 const Hero = styled.section`
-  border: 1px solid #000;
   position: relative;
   max-width:1400px;
   width: 100%;
-  background-image: url(${'/Home.png'});
-  background-repeat: no-repeat; /* Prevent background image from repeating */
-  background-size: cover; /* Cover the entire container */
   background-position:center; /* Center the background image */
   font-family:'poppins',sans-serif;
   height: 100vh;
@@ -27,21 +23,30 @@ const TextContainer = styled.div`
 
 const HeroTitle = styled.h1`
   margin-bottom: 10px;
-  color: #0C2D48;
+  color: black;
+  background-color:white;
+   border-radius: 15px;
+
 `;
 
 const HeroParagraph = styled.p`
   margin: 0;
+  color:#fff;
 `;
 
 const GetStartedButton = styled.a`
   display: inline-block;
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #0C2D48;
+  background-color: #424949;
   color: white;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 14px;
+ &:hover {
+    color: black;
+    background-color:white;
+    textDecoration:underline;
+  }
 `;
 
 // Interactive Button
@@ -50,7 +55,7 @@ const InteractiveButton = styled.button`
   bottom: 20px;
   right: 20px;
   padding: 10px 20px;
-  background-color: #9c27b0;
+  background-color: #424949;
   color: white;
   border-radius: 5px;
   cursor: pointer;

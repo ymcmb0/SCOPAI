@@ -1,27 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Footer from './footer';
+import Header from './header';
+import GalaxyBackground from './galaxybackground';
 
 const PageContent = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-image: url('/Home.png'); 
-  background-size: cover;
-  background-position: center;
-`;
-
-const Section = styled.section`
-  padding: 50px 0;
-  background-color: rgba(255, 255, 255, 0.8); 
-  background-image: url('/Home.png');
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 `;
 
 const AdvertisementContainer = styled.div`
@@ -30,8 +17,8 @@ const AdvertisementContainer = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  color: #0C2D48;
-  font-size: 2rem;
+  color: white;
+  font-size: 36px;
   margin-bottom: 20px;
 `;
 
@@ -39,8 +26,8 @@ const SectionContent = styled.p`
   color: #fff;
   font-size: 1.2rem;
   margin-bottom: 30px;
-  background-color: black; 
-  padding: 20px; 
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px;
   border-radius: 10px;
 `;
 
@@ -69,26 +56,40 @@ const AdvertisementPage = () => {
   };
 
   return (
-    <PageContent>    
-      {/* Advertisement Section */}
-      <AdvertisementContainer>
-        <SectionTitle>Advertisement Module</SectionTitle>
-        <SectionContent>
-          SCOPAI's advertisement module allows you to promote blockchain-related ads to a targeted audience, providing an effective way to reach potential users and investors in the blockchain community.
-        </SectionContent>
-        {/* Add advertisement content here */}
-        <SectionContent>
-          Optimizing gas consumption is important in Ethereum smart contract development to reduce transaction costs and make DApps more efficient and economical for users.
-        </SectionContent>
-        <SectionContent>
-          Promoting optimized smart contract code enhances scalability, reduces gas costs, and improves overall efficiency of decentralized applications (DApps).
-        </SectionContent>
-        {/* Check if user is logged in and subscribed, then show the upload button */}
-        {loggedIn && subscription === 'true' && (
-          <Button onClick={handleUploadClick}>Upload Advertisement</Button>
-        )}
-      </AdvertisementContainer>
-    </PageContent>
+    <>
+      <GalaxyBackground />
+      <Header />
+      <PageContent>
+        <AdvertisementContainer>
+          <SectionTitle>Advertisement Module</SectionTitle>
+          <SectionContent>
+            Welcome to SCOPAI's Advertisement Module. Here, you can promote your blockchain-related ads to a targeted audience, reaching potential users and investors within the blockchain community.
+          </SectionContent>
+          {/* Additional SectionContent with benefits of advertising */}
+          <SectionContent>
+            Advertising on SCOPAI provides several benefits:
+            <ul>
+              <li>Reach a targeted audience interested in blockchain technology.</li>
+              <li>Enhance visibility for your blockchain projects and products.</li>
+              <li>Connect with potential users and investors looking for innovative solutions.</li>
+              <li>Drive traffic to your platform or decentralized application (DApp).</li>
+            </ul>
+          </SectionContent>
+          {/* Check if user is logged in and subscribed, then show the upload button */}
+          {loggedIn && subscription === 'true' && (
+            <Button onClick={handleUploadClick}>Upload Advertisement</Button>
+          )}
+          {/* Add a call-to-action to sign up for advertising */}
+          {!loggedIn && (
+            <SectionContent>
+              Sign up now to start advertising your blockchain projects and products!
+              <Button onClick={() => navigate('/register')}>Sign Up</Button>
+            </SectionContent>
+          )}
+        </AdvertisementContainer>
+      </PageContent>
+      <Footer />
+    </>
   );
 };
 

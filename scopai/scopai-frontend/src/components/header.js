@@ -1,103 +1,120 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import styled from 'styled-components';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
-  position: fixed;
-  max-width: 1400px;
-  width: 100%;
-  background-color: ${({ scrolled }) => (scrolled ? '#0C2D48' : 'transparent')};
+  position: relative;
+  background-color: ${({ scrolled }) => (scrolled ? 'white' : 'transparent')};
   transition: background-color 0.3s;
   z-index: 1000;
-  font-family: 'poppins', sans-serif;
+  font-family: 'Anta', sans-serif;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const HeaderContent = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
 `;
 
+const LogoContainer = styled(NavLink)`
+  display: flex;
+  margin-left:-80px;
+  margin-right:80px;
+  text-decoration:none;
+  align-items: center;
+`;
+
 const Logo = styled.img`
   max-width: 100px;
+  height: auto;
+  padding: 1px;
+  margin-right: -20px;
+  margin-left: 4px;
+  filter: ${({ scrolled }) => (scrolled ? 'invert(100%)' : '#fff')};
 `;
 
 const LogoText = styled.span`
-  color: ${({ textColor }) => textColor || '#fff'};
-  font-size: 1.6rem;
-  margin-left: -10px;
-  font-family: 'poppins', sans-serif;
-  font-weight: bold;
+  color: ${({ scrolled }) => (scrolled ? '#000' : '#fff')};
+  font-size: 2.4rem;
+  margin-left: 5px;
 `;
 
 const Navigation = styled.nav`
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
-  flex-grow: 1;
 `;
 
 const NavigationLink = styled(NavLink)`
-  color: ${({ textColor }) => textColor || '#ffff'};
+  color: ${({ scrolled }) => (scrolled ? 'black' : 'white')};
   text-decoration: none;
-  margin: 0 -50px; /* Adjusted margin */
-  font-size: 1.1 rem;
+  margin: 0 10px;
+  font-size: 1rem;
   transition: color 0.3s;
 
   &:hover {
-    color: #61dafb;
+    color: orange;
+    textDecoration:underline;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
   }
 `;
 
 const JoinButtonContainer = styled.div`
   position: relative;
+
 `;
 
 const UserEmail = styled.h5`
-  color: #fff;
-  font-family: 'poppins', sans-serif;
+  color: ${({ scrolled }) => (scrolled ? 'black' : 'white')};
   font-weight: normal;
   margin-left: 10px;
 `;
 
 const JoinButton = styled.button`
   background: none;
-  border: none;
-  color: ${({ textColor }) => textColor || '#fff'};
+  border-color: ${({ scrolled }) => (scrolled ? '#000' : '#fff')};
+  font-family: 'Anta';
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   border-radius: 20px;
-
-  &:hover {
-    color: #61dafb;
-  }
+   &:hover {
+    background-color: grey;
+    }
 `;
 
 const DropdownArrow = styled.span`
+ color: ${({ scrolled }) => (scrolled ? '#000' : '#fff')};
   margin-left: 5px;
+  cursor: pointer;
 `;
 
 const Dropdown = styled.div`
   position: absolute;
-  top: 100%;
+  top: calc(100% + 5px);
   left: 0;
-  background-color: #242424;
+  background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
-  flex-direction: column;
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
   padding: 10px;
   z-index: 1;
   text-align: center;
 `;
 
+const DropdownItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const DropdownItem = styled(NavLink)`
-  color: #fff;
+  color: #000;
   text-decoration: none;
   font-size: 1rem;
   margin: 5px 0;
@@ -105,122 +122,105 @@ const DropdownItem = styled(NavLink)`
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [textColor, setTextColor] = useState('#fff');
   const [showOptions, setShowOptions] = useState(false);
   const navigate = useNavigate();
-  const [login, setLogin] = useState(false);
   const user_email = localStorage.getItem('user');
+  const joinButtonRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
     };
-    if (!localStorage.getItem('user')) {
-      navigate('/login');
-    }
     window.addEventListener('scroll', handleScroll);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [navigate]);
+  }, []);
 
-  useEffect(() => {
-    if (!localStorage.getItem('user') && login) {
-      navigate('/login');
-    }
-    const updateTextColor = () => {
-      const bodyStyles = getComputedStyle(document.body);
-      const backgroundColor = bodyStyles.backgroundColor;
-
-      const rgbValues = backgroundColor.match(/\d+/g);
-      if (rgbValues) {
-        const [r, g, b] = rgbValues.map(Number);
-
-        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-        setTextColor(luminance > 0.5 ? '#000' : '#fff');
-      }
-    };
-
-    updateTextColor();
-    window.addEventListener('resize', updateTextColor);
-
-    return () => {
-      window.removeEventListener('resize', updateTextColor);
-    };
-  }, [navigate]);
-
-  const handleOptionsToggle = (status) => {
-    setShowOptions(status);
+  const handleOptionsToggle = () => {
+    setShowOptions(!showOptions);
   };
+
   const handleLogout = () => {
     localStorage.clear();
-    // navigate("/login");
-    setLogin(true);
+    setShowOptions(false);
+    navigate('/login');
   };
+
+  const handleMouseEnter = () => {
+    setShowOptions(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowOptions(false);
+  };
+
 
   return (
     <HeaderContainer scrolled={scrolled}>
       <HeaderContent>
-        <Logo src="/Logo400x400.png" alt="SCOPAI" />
-        <LogoText textColor={textColor}>SCOPAI</LogoText>
+        <LogoContainer>
+          <Logo scrolled={scrolled} src="/Logo400x400.png" alt="SCOPAI" />
+          <LogoText scrolled={scrolled}>SCOPAI</LogoText>
+        </LogoContainer>
         <Navigation>
-          <NavigationLink to="/h" textColor={textColor}>
+          <NavigationLink to="/landingsection" scrolled={scrolled}>
             Home
           </NavigationLink>
-          <NavigationLink to="/h#features" textColor={textColor}>
+          <NavigationLink to="/features" scrolled={scrolled}>
             Features
           </NavigationLink>
-          <NavigationLink to="/h#services" textColor={textColor}>
+          <NavigationLink to="/services" scrolled={scrolled}>
             Services
           </NavigationLink>
-          <NavigationLink to="/h#pricingpage" textColor={textColor}>
+          <NavigationLink to="/pricingpage" scrolled={scrolled}>
             Pricing
           </NavigationLink>
-          <NavigationLink to="/h#about" textColor={textColor}>
+          <NavigationLink to="/about" scrolled={scrolled}>
             About
           </NavigationLink>
-          {/* Navigation link for AdvertisementPage */}
-          <NavigationLink to="/h#advertisement" textColor={textColor}>
+          <NavigationLink to="/ad" scrolled={scrolled}>
             Advertisement
           </NavigationLink>
         </Navigation>
         {localStorage.getItem('user') ? (
-          <>
-            <UserEmail>{user_email}</UserEmail>
-            <JoinButtonContainer
-              onMouseEnter={() => handleOptionsToggle(true)}
-              onMouseLeave={() => handleOptionsToggle(false)}
-            >
-              <JoinButton textColor={textColor}>
-                Logout <DropdownArrow>▼</DropdownArrow>
-                {showOptions && (
-                  <Dropdown
-                    isOpen={showOptions}
-                    onMouseEnter={() => handleOptionsToggle(true)}
-                    onMouseLeave={() => handleOptionsToggle(false)}
-                  >
-                    <DropdownItem onClick={() => handleLogout()}>Logout</DropdownItem>
-                  </Dropdown>
-                )}
-              </JoinButton>
-            </JoinButtonContainer>
-          </>
+          <JoinButtonContainer ref={joinButtonRef}>
+            <JoinButton onClick={handleOptionsToggle}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={() => {
+              // Check if cursor is outside the join button and dropdown
+              if (!joinButtonRef.current.contains(document.activeElement)) {
+                handleMouseLeave();
+              }
+            }}>
+              <UserEmail scrolled={scrolled}>{user_email}</UserEmail>
+              <DropdownArrow scrolled={scrolled}>▼</DropdownArrow>
+              <Dropdown isOpen={showOptions} >
+                <DropdownItemContainer >
+                  <DropdownItem to="/profile">Manage Profile</DropdownItem>
+                  <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
+                </DropdownItemContainer>
+              </Dropdown>
+            </JoinButton>
+          </JoinButtonContainer>
         ) : (
-          <JoinButtonContainer>
-            <JoinButton textColor={textColor}>
-              Join <DropdownArrow>▼</DropdownArrow>
-              {showOptions && (
-                <Dropdown
-                  isOpen={showOptions}
-                  onMouseEnter={() => handleOptionsToggle(true)}
-                  onMouseLeave={() => handleOptionsToggle(false)}
-                >
+          <JoinButtonContainer ref={joinButtonRef}>
+            <JoinButton onClick={handleOptionsToggle}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={() => {
+              // Check if cursor is outside the join button and dropdown
+              if (!joinButtonRef.current.contains(document.activeElement)) {
+                handleMouseLeave();
+              }
+            }}>
+              <UserEmail scrolled={scrolled}>Join</UserEmail> <DropdownArrow scrolled={scrolled}>▼</DropdownArrow>
+              <Dropdown isOpen={showOptions}>
+                <DropdownItemContainer >
                   <DropdownItem to="/login">Login</DropdownItem>
                   <DropdownItem to="/register">Signup</DropdownItem>
-                </Dropdown>
-              )}
+                </DropdownItemContainer>
+              </Dropdown>
             </JoinButton>
           </JoinButtonContainer>
         )}
