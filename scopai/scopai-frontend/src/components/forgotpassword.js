@@ -145,7 +145,7 @@ const ForgotPassword = () => {
               {message && <ErrorMessage>{message}</ErrorMessage>}
             </form>
             <RegisterLink>
-          Goto Home? <a href="/landingsection">Home here</a>
+          Goto Home? <a href="/">Home here</a>
         </RegisterLink>
              </FormContainer>
         </BorderedFormContainer>

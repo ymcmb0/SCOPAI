@@ -83,7 +83,7 @@ const PaymentForm = () => {
 
   useEffect(() => {
     if (localStorage.getItem('user') && subscribe === true) {
-      navigate('/landingsection');
+      navigate('/');
     }
   }, [navigate]);
 
@@ -127,7 +127,7 @@ const PaymentForm = () => {
         localStorage.setItem('subscribed_user', true);
         if (localStorage.getItem('user')) {
 
-          navigate('/landingsection');
+          navigate('/');
         }
       }
       setLoading(false);

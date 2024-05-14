@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Loader from './logospinner';
 import { Shimmer } from 'react-shimmer';
 import GalaxyBackground from './galaxybackground';
-import Recaptcha from 'react-recaptcha';
+import ReCAPTCHA from 'react-google-recaptcha';
 // Styled components
 const RegisterContainer = styled.div`
   display: flex;
@@ -94,29 +94,37 @@ const RegisterLink = styled.p`
 const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const captcharef = useRef(null); // Initialize ref with null
   const user = localStorage.getItem("user");
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(false); // State for success message
-  const [captchaVerified, setCaptchaVerified] = useState(false); // State to track captcha verification
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+
   useEffect(() => {
     if (user) {
       navigate('/landingsection');
     }
   }, [navigate, user]);
+
   const handleCaptchaVerify = (response) => {
     if (response) {
       setCaptchaVerified(true);
     }
   };
   const handleRegister = async (data) => {
-    console.log('Registration payload:', data);
+    console.log('Registration payload:', data); // Log the data being sent
+    
     try {
       setLoading(true);
       const response = await axios.post('http://localhost:8000/api/register', data);
       console.log('Registration successful:', response.data);
       setLoading(false);
-      // Set success message
       setSuccessMessage('Registration successful! Please check your email for the activation link.');
+      
+      // Reset reCAPTCHA after successful registration
+      if (captcharef.current) {
+        captcharef.current.reset();
+      }
     } catch (error) {
       setLoading(false);
       console.error('Registration failed', error);
@@ -127,21 +135,23 @@ const Register = () => {
       }
     }
   };
+  
 
   return (
-  <>
-  <GalaxyBackground />
-    <RegisterContainer>
-     {loading ? (
-        <Shimmer width={500} height={500} />
-      ) : (
-      <FormWrapper>
-        <LogoImg src="/Logo.png" alt="Logo" />
-        <Title>Register</Title>
-          {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
-        <Form onSubmit={handleSubmit(handleRegister)}>
-
-          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+    <>
+      <GalaxyBackground />
+      <RegisterContainer>
+        {/* Loading indicator or shimmer */}
+        {loading ? (
+          <Shimmer width={500} height={500} />
+        ) : (
+          <FormWrapper>
+            {/* Form content */}
+            <LogoImg src="/Logo.png" alt="Logo" />
+            <Title>Register</Title>
+            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+            <Form onSubmit={handleSubmit(handleRegister)}>
+            {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
           <Label>Email:</Label>
           <Input type="email" {...register('email', { required: 'Email is required' })} />
 
@@ -165,26 +175,24 @@ const Register = () => {
 
           {errors.isDeveloper && <ErrorMessage>{errors.isDeveloper.message}</ErrorMessage>}
           {errors.isAdvertiser && <ErrorMessage>{errors.isAdvertiser.message}</ErrorMessage>}
-        <Recaptcha
-                sitekey="6Ld7184pAAAAAMS6MLYExjOWUKbC3Kpt2yA1FFMh"
-                render="explicit"
-                verifyCallback={handleCaptchaVerify}
-              />
-          <SubmitButton type="submit"
-          //disabled={!captchaVerified}
-          >Register</SubmitButton>
-        </Form>
 
-        <RegisterLink>
+              <ReCAPTCHA
+                sitekey={process.env.REACT_APP_SITE_KEY}
+                ref={captcharef}
+              />
+              <SubmitButton type="submit">Register</SubmitButton>
+            </Form>
+            <RegisterLink>
           Already registered? <a href="/login">Login here</a>
         </RegisterLink>
         <RegisterLink>
           Go to Homepage <a href="/landingsection">Click here</a>
         </RegisterLink>
-      </FormWrapper>)}
-    </RegisterContainer>
+          </FormWrapper>
+        )}
+      </RegisterContainer>
     </>
   );
 };
 
-export default Register;
+export default Register; 

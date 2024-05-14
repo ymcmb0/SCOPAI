@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import { Shimmer } from 'react-shimmer';
 import LogoImage from './Logo.png';
 import GalaxyBackground from './galaxybackground';
+
 const LoginContainer = styled.div`
-position:relative;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,24 +15,26 @@ position:relative;
 `;
 
 const BorderedFormContainer = styled.div`
- width: 90%;
- position:relative;
+  width: 90%;
+  position: relative;
   max-width: 400px;
   background-color: rgba(255, 255, 255, 0.5); /* Transparent white background */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px #000;
-  z-index:1;
+  z-index: 1;
 `;
+
 const GalaxyBackgroundContainer = styled.div`
- color:"#000"; /* Position the GalaxyBackground fixed to ensure it's always visible */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color:"black";
+  background-color: black;
   height: 100%;
-  z-index: 1; /* Ensure the GalaxyBackground is rendered behind other elements */
+  z-index: 0; /* Ensure the GalaxyBackground is rendered behind other elements */
 `;
+
 const LogoContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -77,7 +80,7 @@ const Input = styled.input`
   width: 80%;
   padding: 8px;
   margin-bottom: 16px;
-  border: 1px solid ;
+  border: 1px solid;
   border-radius: 4px;
 `;
 
@@ -106,6 +109,7 @@ const RegisterLink = styled.p`
   font-size: 14px;
   margin-bottom: 0px;
 `;
+
 const Forgetpass = styled.p`
   margin-top: 1px;
   font-size: 14px;
@@ -124,8 +128,26 @@ const Login = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const isPasswordStrong = (password) => {
+    return password.length >= 8;
+  };
+
   const handleLogin = async () => {
-  const error='';
+    if (!isEmailValid(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!isPasswordStrong(password)) {
+      setError('Password should have at least 8 characters.');
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axios.post('http://127.0.0.1:8000/api/login', {
@@ -133,26 +155,23 @@ const Login = () => {
         password: password,
       });
 
-      console.log('Login successful:', response);
       if (response.status === 200) {
         localStorage.setItem('user', email);
-        // After successful login, store the token in local storage
-        localStorage.setItem('token', response.data.token); // Assuming the token is returned in the response
-         console.log('Token:', response.data.token);
+        localStorage.setItem('token', response.data.token);
         localStorage.setItem('subscribed_user', response.data.subscription_status);
-        navigate('/landingsection');
+        navigate('/');
       }
 
       setError('');
     } catch (error) {
-    setLoading(false);
-    if (error.response && error.response.data) {
-      setError(error.response.data); // Display the error message from the backend
-    } else {
-      setError('An error occurred while processing your request.'); // Fallback error message
+      setLoading(false);
+      if (error.response && error.response.data) {
+        setError(error.response.data);
+      } else {
+        setError('An error occurred while processing your request.');
+      }
+      console.error('Login failed', error.response);
     }
-    console.error('Login failed', error.response);
-  }
   };
 
   const handleEmailChange = (e) => {
@@ -166,46 +185,56 @@ const Login = () => {
   };
 
   return (
-  <>
-  <GalaxyBackgroundContainer>
-  <GalaxyBackground />
-    </GalaxyBackgroundContainer>
-    <LoginContainer>
-
-      {loading ? (
-        <Shimmer width={500} height={500} />
-      ) : (
-        <BorderedFormContainer>
-          <LogoContainer>
-            <LogoImg src={LogoImage} alt="Logo" />
-          </LogoContainer>
-          <TextContainer>
-            <TitleL>Sign into your account</TitleL>
-          </TextContainer>
-          <FormContainer>
-            <TitleL>Login</TitleL>
-            {error && <ErrorMessage>{error}</ErrorMessage>}
-            <Label>Email:</Label>
-            <Input type="email" value={email} onChange={handleEmailChange} placeholder="Enter your email" />
-            <Label>Password:</Label>
-            <Input type="password" value={password} onChange={handlePasswordChange} placeholder="Enter your password" />
-
-            <SubmitButton onClick={handleLogin}>Login</SubmitButton>
-
-            <RegisterLink>
-              Not registered? <a href="/register">Register here</a>
-            </RegisterLink>
-            <Forgetpass>
-            Forgot password? <a href="/forgot-password">Reset Password</a>
-            </Forgetpass>
-            <RegisterLink>
-              Goto Homepage <a href="/landingsection">Click here</a>
-            </RegisterLink>
-          </FormContainer>
-        </BorderedFormContainer>
-      )}
-    </LoginContainer>
-  </>);
+    <>
+      <GalaxyBackgroundContainer>
+        <GalaxyBackground />
+      </GalaxyBackgroundContainer>
+      <LoginContainer>
+        {loading ? (
+          <Shimmer width={500} height={500} />
+        ) : (
+          <BorderedFormContainer>
+            <LogoContainer>
+              <LogoImg src={LogoImage} alt="Logo" />
+            </LogoContainer>
+            <TextContainer>
+              <TitleL>Sign into your account</TitleL>
+            </TextContainer>
+            <FormContainer>
+              <TitleL>Login</TitleL>
+              {error && <ErrorMessage>{error}</ErrorMessage>}
+              <Label>Email:</Label>
+              <Input
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                placeholder="Enter your email"
+                required
+              />
+              <Label>Password:</Label>
+              <Input
+                type="password"
+                value={password}
+                onChange={handlePasswordChange}
+                placeholder="Enter your password"
+                required
+              />
+              <SubmitButton onClick={handleLogin}>Login</SubmitButton>
+              <RegisterLink>
+                Not registered? <a href="/register">Register here</a>
+              </RegisterLink>
+              <Forgetpass>
+                Forgot password? <a href="/forgot-password">Reset Password</a>
+              </Forgetpass>
+              <RegisterLink>
+                Goto Homepage <a href="/">Click here</a>
+              </RegisterLink>
+            </FormContainer>
+          </BorderedFormContainer>
+        )}
+      </LoginContainer>
+    </>
+  );
 };
 
 export default Login;

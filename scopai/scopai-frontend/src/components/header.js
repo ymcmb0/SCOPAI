@@ -165,7 +165,7 @@ const Header = () => {
           <LogoText scrolled={scrolled}>SCOPAI</LogoText>
         </LogoContainer>
         <Navigation>
-          <NavigationLink to="/landingsection" scrolled={scrolled}>
+          <NavigationLink to="/" scrolled={scrolled}>
             Home
           </NavigationLink>
           <NavigationLink to="/features" scrolled={scrolled}>

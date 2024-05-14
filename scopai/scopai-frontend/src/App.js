@@ -28,7 +28,7 @@ function App() {
 <>
       <Routes>
         {/* Routes without Header and Footer */}
-        <Route path="/landingsection" element={<LandingSection />} />
+        <Route path="/" element={<LandingSection />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<ManageProfile />} />
