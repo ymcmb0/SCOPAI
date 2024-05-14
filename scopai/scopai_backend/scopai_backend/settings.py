@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django.contrib.staticfiles','corsheaders',
     'fyp.apps.FypConfig',
-"verify_email.apps.VerifyEmailConfig",
+#"verify_email.apps.VerifyEmailConfig",
 
 ]
 # settings.py
